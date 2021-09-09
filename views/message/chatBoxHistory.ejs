@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="/css/chatBox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <title>Chat box</title>
+</head>
+
+<body>
+    <header>
+        <%- include('../header/'+role +'Header.hbs'); %>
+    </header>
+    <div class="chatForm">
+        <div class="chatHistory">
+            <div class="chatOption">
+                <h2>Chat</h2>
+                <input type='text' id='addChat' placeholder='tìm kiến hoặc thêm người chat'><button onclick='addChat() '>Search</button>
+            </div>
+            <div class="history">
+                <% data1.forEach(function(data1) { %>
+                    <%if (data1.person1 !== formData.sender) { %>
+                        <div class='<%=data1._id %>' onclick="chatBox('<%=data1.person1 %>','<%=data1._id %>')">
+                            <img src='<%=data1.person1Ava %>'>
+                            <p id="<%=data1._id %>">
+                                <%= data1.person1 %>
+                                    <br>
+                                    <%= data1.message[0].ownermessenger %>:
+                                        <%= data1.message[0].messContent.slice(0, 16); %>...
+                            </p>
+                        </div>
+                        <% } %>
+                            <%if (data1.person2 !== formData.sender) { %>
+                                <div class='<%=data1._id %>' onclick="chatBox('<%=data1.person2 %>','<%=data1._id %>')">
+                                    <img src='<%=data1.person2Ava %>'>
+                                    <p id="<%=data1._id %>">
+                                        <%= data1.person2 %>
+                                            <br>
+                                            <%= data1.message[0].ownermessenger %>:
+                                                <%= data1.message[0].messContent.slice(0, 16); %>...
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <% }); %>
+            </div>
+        </div>
+        <div class='chat'>
+            <div class='chatTitle'>
+                <h2>Conversation between
+                    <%=formData.sender %> and
+                        <%=formData.receiver %>
+                </h2>
+            </div>
+            <div class="chatBox">
+                <div id='messContent'>
+                    <% data.message.forEach(function(message) { %>
+                        <%if (message.ownermessenger == formData.sender) { %>
+                            <div class='sender'>
+                                <p>
+                                    <%= message.messContent %>
+                                </p>
+                                <img src='<%=formData.senderAva %>'>
+                            </div>
+                            <% } else if (message.ownermessenger == formData.receiver) { %>
+                                <div class='receiver'>
+                                    <img src='<%=formData.receiverAva %>'>
+                                    <p>
+                                        <%= message.messContent %>
+                                    </p>
+                                </div>
+                                <% } else { %>
+                                    <div style="width: 100%;padding: 0;margin: 0;text-align: center;">
+                                        <p>
+                                            <%= message.ownermessenger %>
+                                                <%= message.messContent %>
+                                        </p>
+                                    </div>
+                                    <% } %>
+                                        <% }); %>
+                </div>
+                <p id="action" style="display: none;color:blanchedalmond;height:20px;padding-left:20px;"></p>
+            </div>
+            <div class="sendMess">
+                <input id="mess" type="text" />
+                <button id="btnChat">Send</button>
+            </div>
+        </div>
+    </div>
+    <div class="chatInformation" style="display: none;">
+        <input id="allID" type="text" value="<%=listID %>" />
+        <input id="receiver" type="text" value="<%=formData.receiver %>" />
+        <input id="name" type="text" value="<%=formData.sender %>" />
+        <input id="_idRoom" type="text" value="<%=data1[0]._id %>" />
+        <img id="nameAva" style='max-width:150px;max-height:200px' src='<%=formData.senderAva %>'>
+        <img id="receiverAva" style='max-width:150px;max-height:200px' src='<%=formData.receiverAva %>'>
+    </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    // select relevant elements
+    const _idRoom = document.querySelector("#_idRoom");
+    const receiver = document.querySelector("#receiver");
+    const receiverAva = document.querySelector("#receiverAva");
+    const nameAva = document.querySelector("#nameAva");
+    const name = document.querySelector("#name");
+    const mess = document.querySelector("#mess");
+
+    // establish socket.io connection
+    const socket = io();
+
+    $(document).ready(function() {
+        document.cookie = "promo_shown=1; SameSite=None;Secure"
+
+        $("#welcome").html("Welcome " + name.value)
+        $(".chatBox").scrollTop($('#messContent').height())
+            //hiệu ứng menu
+        $('header li').hover(function() {
+            $(this).find("div").slideDown()
+        }, function() {
+            $(this).find("div").hide(500)
+        });
+
+
+        connectAllConversation();
+    });
+
+    //tạo room cho tất cả cuọco trò chuyện "online" để nhận thông báo khi người khác gửi tin nhắn
+    function connectAllConversation() {
+        var idConversationList = [];
+        var object = $("#allID").val()
+        idConversationList = object.split(",");
+        socket.emit("tao-room", {
+            idConversationList
+        });
+    }
+    //bắt sự kiện nhập
+    $("#mess").focusin(function() {
+        socket.emit('typing', {
+            sender: name.value,
+            receiver: receiver.value,
+            _idRoom: _idRoom.value
+        })
+    });
+    //bắt sự kiện hủy bỏ hoặc kết thúc nhập
+    $("#mess").focusout(function() {
+        socket.emit('stopTyping', {
+            sender: name.value,
+            receiver: receiver.value,
+            _idRoom: _idRoom.value
+        })
+    });
+    //lắng nghe sự kiện nhập và không nhập
+    socket.on("Typing", TypingOrNot)
+    socket.on("notTyping", TypingOrNot)
+
+    //hiển thị dòng trạng thái khi đối phương nhập tin nhắn
+    function TypingOrNot(data) {
+        if (data._idRoom == _idRoom.value) {
+            if (data.action === 'typing') {
+                if (data.person == receiver.value) {
+                    $("#action").show()
+                    $("#action").html(data.person + 'is typing')
+                    $('.chatBox').scrollTop($('#messContent').height())
+                }
+            }
+            if (data.action === 'notTyping') {
+                $("#action").hide()
+                $("#action").html('')
+            }
+        }
+    }
+
+    //lấy cuộc trò chuyện khi người dùng ấn vào 1 cuộc trò chuyện khác ở thanh lịch sử chat
+    function chatBox(receiver, _idRoom) {
+        var click = 0;
+        var Room = '#' + _idRoom
+        $(Room).css("font-weight", "normal");
+        $('#receiver').val(receiver)
+        $('#_idRoom').val(_idRoom)
+        $('.chatTitle').html("<h2>Conversation between " + name.value + " and " + receiver + "</h2>")
+        $('#messContent').html("")
+        $.ajax({
+            url: '/messenger/getMessenger',
+            method: 'get',
+            dataType: 'json',
+            data: {
+                _idRoom: _idRoom
+            },
+            success: function(response) {
+                if (response.msg == 'success') {
+                    if (response.data.person1 == $('#name').val()) {
+                        var senderAva = response.data.person1Ava
+                        var receiverAva = response.data.person2Ava
+                    } else {
+                        var senderAva = response.data.person2Ava
+                        var receiverAva = response.data.person1Ava
+                    }
+                    $('#receiverAva').attr("src", receiverAva);
+                    $.each(response.data.message, function(index, message) {
+                        if (message.ownermessenger === name.value) $('#messContent').append("<div class='sender'><p>" + message.messContent + "</p>" + "<img src='" + senderAva + "'></div>")
+                        if (message.ownermessenger === receiver) $('#messContent').append("<div class='receiver'><img src='" + receiverAva + "'>" + "<p>" + message.messContent + "</p></div>")
+                        if (message.ownermessenger !== name.value && message.ownermessenger !== receiver) $('#messContent').append("<div style='width: 100%;padding: 0;margin: 0;text-align: center;'><p>" + message.ownermessenger + ": " + message.messContent + "</p></div>")
+                    });
+                    $('.chatBox').scrollTop($('#messContent').height())
+                }
+            },
+            error: function(response) {
+                alert('server error');
+            }
+        });
+    }
+
+    //khi người dùng ấn chat thì sẽ server sẽ nhận tin nhắn và xử lý (server on "user-chat" )
+    $("#btnChat").click(function() {
+        if (mess.value != "") {
+            //sender gửi tin nhắn đền server và thông qua server gửi đến người nhận
+            socket.emit("user-chat", {
+                sender: name.value,
+                mess: mess.value,
+                receiver: receiver.value,
+                _idRoom: _idRoom.value,
+            })
+            mess.value = "";
+        }
+    });
+    // server gửi tin nhắn lại từ sender cho receiver
+    socket.on("server-chat", addMessageToHTML)
+
+    // add message to our page
+    function addMessageToHTML(message) {
+        if (message._idRoom == _idRoom.value) {
+            // create a new div element
+            var div = document.createElement("div");
+            if (message.sender == name.value) {
+                div.setAttribute("class", "sender");
+                div.innerHTML = "<p> " + message.mess + "</p> " + "<img src='" + nameAva.src + "'>";
+            } else {
+                div.setAttribute("class", "receiver");
+                div.innerHTML = "<img src='" + receiverAva.src + "'>" + "<p> " + message.mess + " </p>";
+            }
+            // add to list of messages
+            $("#messContent").append(div);
+        }
+
+        //hiển thị tin nhắn mới nhất ở lịch sử chat
+        var newMess = '#' + message._idRoom
+        $(newMess).html(" " + message.receiver + "<br>" + message.sender + ": " + message.mess)
+
+        //tin nhắn gửi đến nếu chưa xem thì in đậm, xem r thì in bt
+        if (message._idRoom != _idRoom.value) {
+            $(newMess).css("font-weight", "bold");
+        } else if (message.receiver == $('#name').val()) {
+            $(newMess).css("font-weight", "normal");
+        }
+        $('.chatBox').scrollTop($('#messContent').height())
+
+        //hiển thị cuộc trò chuyện mới nhất lên đầu lịch sử
+        var newestMess = '.' + message._idRoom
+        $(newestMess).prependTo(".history");
+    }
+
+
+    //click add chat để tìm kiếm 1 cuộc trò chuyện hoặc thêm
+    function addChat() {
+        $.ajax({
+            url: '/messenger/addChat',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                receiver: $('#addChat').val(),
+                sender: name.value
+            },
+            success: function(response) {
+                if (response.msg == 'error') alert('tạo chát  lỗi')
+                if (response.msg == 'user not found') alert('user not found')
+                if (response.msg == 'cuộc hội thoại đã được tạo') {
+                    chatBox(response.receiverName, response.data._id);
+                    //hiển thị cuộc trò chuyện mới nhất lên đầu lịch sử
+                    var newestMess = '.' + response.data._id
+                    $(newestMess).prependTo(".history");
+                }
+                if (response.msg == 'lỗi khi tìm kiếm user') alert('lỗi khi tìm kiếm user')
+                if (response.msg == 'Bạn không thể tạo cuộc trò chuyện với chính mình') alert('Bạn không thể tạo cuộc trò chuyện với chính mình')
+                if (response.msg == 'tạo cuộc hội thoại thành công') {
+                    //hiển thị cuộc trò chuyện mới nhất lên đầu lịch sử
+                    var newestMess = '.' + response._idRoom
+                    $(".history").prepend("<div class='" + response._idRoom + "'onclick=chatBox('" + response.receiverName + "','" + response._idRoom + "')><img src='" + response.receiverAva + "'><p>  " + response.receiverName + "<br>Hệ thống: Đã kết nối! Ấn vào để chat </p></div>")
+                    chatBox(response.receiverName, response._idRoom);
+                    var idConversationList = [];
+                    idConversationList.push(response._idRoom);
+                    //đưa vào room  để chat
+                    socket.emit("tao-room", {
+                        idConversationList
+                    });
+                }
+            },
+            error: function(response) {
+                alert('server error');
+            }
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="/css/teacher/allClass.css">
+    <link rel="stylesheet" href="/css/teacher/menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+</head>
+
+<body>
+    <div class="attendedListOut" style="display: none;">
+        <div id="attendedList"></div>
+    </div>
+    
+    <div class="innerOut" style="display:none">
+        <div class="inner"></div>
+    </div>
+
+    <div class="studentAssessmentOut" style="display:none">
+        <div class="studentAssessment">
+            <h2>Student Assessment </h2>
+            <input type="hidden" id='classID'></input>
+            <input type="hidden" id='studentID'></input>
+            <div class='tr'>Student name: <label id='name'></label></div>
+            <div class='tr'>Email: <label id='email'></label></div>
+            <div class='tr'>
+                <span for="topic">Grade</span>
+                <select class="level" id="grade">
+                    <option value="Greate">Greate </option>
+                    <option value="Good">Good</option>
+                    <option value="Soso">Soso</option>
+                    <option value="Restudy">Restudy</option>
+                </select>
+            </div>
+            <div class='tr'><label>Comment</label><input type="text" id="comment"></div>
+            <div class='tr'><button onclick="takeFeedBack()">Tiến hành đánh giá</button></div>
+        </div>
+    </div>
+
+    <div class="studentAssessmentUpdateOut" style="display:none">
+        <div class="studentAssessmentUpdate">
+            <h2>Update Assessment </h2>
+            <input type="hidden" id='updateclassID'></input>
+            <input type="hidden" id='updatestudentID'></input>
+            <div class='tr'>Student name: <label id='updatename'></label></div>
+            <div class='tr'>
+                <span for="topic">Grade</span>
+                <select class="level" id="updategrade">
+                    <option value="Greate">Greate </option>
+                    <option value="Good">Good</option>
+                    <option value="Soso">Soso</option>
+                    <option value="Restudy">Restudy</option>
+                </select>
+            </div>
+            <div class='tr'><label>Comment</label><input type="text" id="updatecomment"></div>
+            <div class='tr'><button onclick="updateFeekBack()">cập nhật Tiến hành đánh giá</button></div>
+        </div>
+    </div>
+
+    <div class='lolaOut' style="display: none;">
+        <div id='lola'>
+            <div class='tr'>
+                <div class='td'>ID</div>
+                <div class='td'>Status</div>
+                <input type="hidden" id="loladate">
+                <input type="hidden" id="loladate1">
+                <input type="hidden" id="loladate3">
+                <input type="hidden" id="loladate4">
+                <input type="hidden" id="scheduleStatus">
+                <input type="hidden" id="scheduleTime">
+                <input type="hidden" id="scheduleRoom">
+                <input type="hidden" id="scheduleDay">
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="getClassID" value="{{params}}">
+    <header> {{> teacherHeader}}</header>
+
+    <div class="content">
+        <h1>All class level</h1>
+        <div id="tableClass"></div>
+    </div>
+
+</body>
+<script src=" /js/teacher/allClass.js"></script>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/updatecoordinator.css">
+  <link rel="stylesheet" href="/css/homemanage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.checkbtn').click(function () {
+        $('ul').toggleClass('show');
+      });
+    });
+  </script>
+
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="layout">
+    <div class="header">
+      <form method="post" action="./faculty/search">
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+          <i class="fa fa-bars"></i>
+        </label>
+        <a href="/logout"><span class="logout">&times;</span></a>
+      </form>
+
+
+    </div>
+    <div class="layout1">
+      <div class="menu">
+        <ul>
+                    <li><a href="/account/indexAdmin">Home</a></li>
+                    <li><a href="/faculty/allfaculty" >Faculty</a></li>
+                    <li><a href="/guest/allGuest">All Guest</a></li>
+                    <li><a href="/manage/allManager">All manager</a></li>
+                    <li><a href="/admin/createAccount">Create account</a></li>
+                    <li><a href="/faculty/create"> Create Faculty </a></li>
+                    <li><a href="/admin/addtoFaculty">Add to Faculty</a></li>
+                    <li id="popupsettime">Set Time</li>
+
+                </ul>
+
+      </div>
+      <div class="content">
+        <h2>Create Faculty</h2>
+        <div class="swap">
+        <form method="POST" action="/faculty/doCreate">
+
+          <div class="form-group">
+            <label for="facultyname">Faculty Name</label>
+            <input type="text" name="facultyname" id="facultyname" required>
+          </div>
+            <br>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Faculty Id</label>
+            <input type="text" name="facultyID" class="classinput" required>
+            </div>
+            <br>
+          
+          <button type="submit" class="btn5" >Submit</button>
+        </form>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p> Set deadlines for all students</p>
+<input type="date" name="date" id = "date">
+<input type="time" name="time" id = "time"><br>
+<input type="submit" id="btnUpdate2" value="Submit">
+    </div>
+  
+  </div>
+  
+  <script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+ 
+  // Get the button that opens the modal
+  var btn = document.getElementById("popupsettime");
+  var btn2 = document.getElementById("btnUpdate2");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  btn2.onclick = function() {
+    $.ajax({
+    url:"/manage/settime",
+    method: "post",
+    data : {
+      date : $("#date").val(),
+      time : $("#time").val(),
+    },
+    cache : false,
+    success : function (data) {
+        // data is the object that you send form the server by 
+        // res.jsonp();
+        // here data = {success : true}
+        // validate it
+        if(data['success']){
+            alert("Settime success");
+        }
+    },
+    error : function () {
+        // some error handling part
+        alert("Oops! Something went wrong.");
+    }
+});
+    modal.style.display = "none";
+  }
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+
+  <div class="footer">
+    <p>@University-2021</p>
+  </div>
+
+</body>
+
+</html>

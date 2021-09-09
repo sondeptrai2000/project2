@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <script src="/jquery/jquery.js"></script>
+
+</head>
+
+<body>
+
+        <table>
+                {{#each data}}
+                <tr>
+                        <th>{{dayOfWeek }}</th>
+                </tr>
+                {{#each room}}
+                <tr>
+                        <td>{{room }}</td>
+                        <td>{{time }}</td>
+                        <td>{{status }}</td>
+                </tr>
+                {{/each}}
+                {{/each}}
+        </table>
+        <div>
+                <p>sdfghj</p>
+
+        </div>
+        <div>
+                <h1>Thêm phòng</h1>
+                <span>Room Name: <input type="text" name="roomName"></span>
+                <span>Start: <input type="time" name="Start"></span>
+                <span>End: <input type="time" name="End"></span>
+                <button onclick="addRoom()">addRoom</button>
+        </div>
+</body>
+<script>
+        function addRoom() {
+                var roomName = $("input[name='roomName']").val()
+                var ca = ["7:30 đến 9:30", "9:45 đến 11:45", "13:30 đến 15:30", "15:45 đến 17:45", "18:15 đến 20:15"]
+                var room = []
+                for (var i = 0; i < 5; i++) {
+                        room.push({
+                                "room": roomName,
+                                "time": ca[i],
+                                "status": "None"
+                        })
+                }
+                console.log(room)
+                $.ajax({
+                        url: '/admin/addRoom',
+                        method: 'post',
+                        dataType: 'json',
+                        data: {
+                                roomName: room,
+                        },
+                        success: function (response) {
+                                if (response.msg == 'success') {
+                                        alert('ok')
+                                }
+                                if (response.msg == 'error') {
+                                        alert('error')
+                                }
+                        },
+                        error: function (response) {
+                                alert('server error');
+                        }
+                })
+        }
+</script>
+
+
+</html>

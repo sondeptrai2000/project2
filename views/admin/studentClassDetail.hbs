@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="/jquery/jquery.js"></script>
+    {{!-- jsonToExcel --}}
+    <link rel="stylesheet" href="/css/admin/studentClassDetail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+
+</head>
+
+<body>
+    <div class="studentListOut" style="display:none">
+        <div class="studentList"></div>
+    </div>
+    <div class="myAttendOut" style="display:none">
+        <div class="myAttendContent"></div>
+    </div>
+    <div class="teacherIn4Out" style="display:none">
+        <div class="teacherIn4"></div>
+    </div>
+    <div class="content">
+        <div class='leftSide'>
+            {{#each data}}
+            <input type="hidden" value="{{_id}}" id="studentID">
+            <img src='{{avatar}}'>
+            <figcaption>{{username}}</figcaption>
+            <figcaption>{{email}}</figcaption>
+            {{/each}}
+        </div>
+        <div class='rightSide'>
+              <div class='tr'>
+                <div class='td'>Class name</div>
+                <div class='td'>routeName</div>
+                <div class='td'>stage</div>
+                <div class='td'>subject</div>
+                <div class='td'>Description</div>
+                <div class='td'>Teacher Name</div>
+                <div class='td'>Start date</div>
+                <div class='td'>End date</div class='td'>
+                <div class='td'>Student List</div>
+            </div>
+            {{#each data}}
+            {{#each classID}}
+            <div class='tr' id="{{_id}}">
+                <div class='td'>{{className}}</div>
+                <div class='td'>{{routeName}}</div>
+                <div class='td'>{{stage}}</div>
+                <div class='td'>{{subject}}</div>
+                <div class='td'>{{description}}</div>                
+                <div class='td' onclick="viewTeacherProfile('{{teacherID._id}}')">{{teacherID.username}}</div>
+                <div class='td'>{{startDate}}</div>
+                <div class='td'>{{endDate}}</div>
+                <div class='td'>
+                    <button onclick="sendData('{{_id}}')">List of student</button>
+                    <button onclick="myAttended('{{_id}}')">myAttended</button>
+                </div>
+            </div>
+            {{/each}}
+            {{/each}}
+        </div>
+    </div>
+</body>
+<script src="/js/admin/allClassStudent.js"></script>
+
+
+</html>

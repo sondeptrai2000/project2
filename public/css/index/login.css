@@ -1,0 +1,408 @@
+* {
+    box-sizing: border-box
+}
+
+body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    height: auto;
+    width: 100%;
+}
+
+#img1 {
+    box-sizing: border-box;
+    width: 100%;
+    height: 550px;
+    background-image: url("/index.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    text-align: center;
+    padding-top: 10%;
+    color: seashell;
+    margin-bottom: 30px;
+}
+
+#img1 button {
+    height: 60px;
+    width: auto;
+    padding: 15px;
+    background-color: steelblue;
+    color: whitesmoke;
+    font-size: 25px;
+    border-radius: 30px;
+}
+
+#img1 button:hover {
+    background-color: black;
+    color: whitesmoke;
+}
+
+#loginForm,
+#consulting,
+#forGotPassOut {
+    padding: 5%;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    position: fixed;
+    /* Stay in place */
+    background-color: rgb(215, 225, 230);
+    /* Fallback color */
+    background-color: rgba(209, 189, 189, 0.4);
+    /* Black w/ opacity */
+}
+
+#forGotPassOut {
+    z-index: 20;
+}
+
+#loginFormContent,
+#consultingContent {
+    padding: 15px;
+    border: lightblue 4px solid;
+    box-shadow: 10px 10px 10px 10px lightblue;
+    width: 30%;
+    height: auto;
+    margin-left: 35%;
+    border-radius: 30px;
+}
+
+#loginFormContent,
+#consultingContent {
+    background: repeat url("https://img.pikbest.com/png-images/qiantu/cartoon-character-kid-studying-hard_2722904.png!c1024wm0/compress/true/progressive/true/format/webp/fw/1024");
+    background-size: 100%;
+    padding: 10px;
+}
+
+#loginFormContent p {
+    padding-left: 5%;
+    display: inline-block;
+    /* background: rgba(139, 69, 110, 0.8); */
+    font-family: "Fantasy";
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+    height: 40px;
+    margin: 0;
+    background-color: white;
+    opacity: 0.8;
+}
+
+#loginFormContent input {
+    opacity: 0.8;
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-family: "Fantasy";
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#loginFormContent input::placeholder {
+    opacity: 1;
+    color: rgb(0, 0, 0);
+    height: 30px;
+    padding: 0;
+    padding-left: 5%;
+}
+
+#loginFormContent div {
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    text-align: center;
+}
+
+#loginFormContent button {
+    width: auto;
+    height: 50px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#consultingContent p:nth-child(1) {
+    padding-left: 5%;
+    display: inline-block;
+    /* background: rgba(139, 69, 110, 0.8); */
+    font-family: "Fantasy";
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+    height: 40px;
+    margin: 0;
+    background-color: white;
+    opacity: 0.8;
+}
+
+#xx {
+    padding-left: 5%;
+    display: inline-block;
+    font-family: "Fantasy";
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    height: 40px;
+    margin: 0;
+    background-color: white;
+    opacity: 0.8;
+}
+
+#consultingContent input {
+    opacity: 0.8;
+    width: 90%;
+    height: 50px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-family: "Fantasy";
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#consultingContent input::placeholder {
+    opacity: 1;
+    color: rgb(0, 0, 0);
+    height: 30px;
+    padding: 0;
+    padding-left: 5%;
+}
+
+#consultingContent div {
+    width: 90%;
+    height: 50px;
+    padding: 0;
+    padding-left: 20%;
+}
+
+#consultingContent button {
+    width: 40%;
+    height: 50px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#consultingContent select {
+    opacity: 0.8;
+    width: 49%;
+    height: 50px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-family: "Fantasy";
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#forGotPassContent {
+    background: repeat url("https://img.pikbest.com/png-images/qiantu/cartoon-character-kid-studying-hard_2722904.png!c1024wm0/compress/true/progressive/true/format/webp/fw/1024");
+    background-size: 100%;
+    padding: 10px;
+}
+
+#forGotPassContent {
+    padding: 15px;
+    border: lightblue 4px solid;
+    box-shadow: 10px 10px 10px 10px lightblue;
+    width: 30%;
+    height: auto;
+    margin-left: 35%;
+    border-radius: 30px;
+}
+
+#forGotPassContent p {
+    padding-left: 5%;
+    display: inline-block;
+    /* background: rgba(139, 69, 110, 0.8); */
+    font-family: "Fantasy";
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+    height: 40px;
+    margin: 0;
+    background-color: white;
+    opacity: 0.8;
+}
+
+#forGotPassContent input {
+    opacity: 0.8;
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-family: "Fantasy";
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#forGotPassContent input::placeholder {
+    opacity: 1;
+    color: rgb(0, 0, 0);
+    height: 30px;
+    padding: 0;
+    padding-left: 5%;
+}
+
+#forGotPassContent div {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+#forGotPassContent button {
+    width: auto;
+    height: 50px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#forGotPassContent {
+    background: repeat url("https://img.pikbest.com/png-images/qiantu/cartoon-character-kid-studying-hard_2722904.png!c1024wm0/compress/true/progressive/true/format/webp/fw/1024");
+    background-size: 100%;
+    padding: 10px;
+}
+
+#forGotPassContent {
+    padding: 15px;
+    border: lightblue 4px solid;
+    box-shadow: 10px 10px 10px 10px lightblue;
+    width: 30%;
+    height: auto;
+    margin-left: 35%;
+    border-radius: 30px;
+}
+
+header,
+footer {
+    box-sizing: border-box;
+    height: 60px;
+    width: 100%;
+    color: black;
+    clear: left;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    z-index: 5;
+    position: fixed;
+    background-color: whitesmoke;
+}
+
+header ul {
+    margin: 0;
+    overflow: hidden;
+    list-style-type: none;
+    height: 100%;
+    width: auto;
+    padding: 0;
+    font-size: 20px;
+    float: right;
+}
+
+header li {
+    padding: 0;
+    height: 100%;
+    float: left;
+    width: 190.5px;
+}
+
+header a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: 9%;
+    color: black;
+}
+
+header a:hover {
+    background: #333;
+    color: #F1F1F1;
+}
+
+#aboutUs {
+    width: 100%;
+    height: 400px;
+    padding: 0 20px;
+    margin: 0;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    border: black solid;
+}
+
+#aboutUs div:nth-child(1) {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 40%;
+    height: 400px;
+    float: left;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#aboutUs div:nth-child(1) img {
+    float: left;
+}
+
+#aboutUs div:nth-child(2) {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 2.5% 7.5%;
+    width: 60%;
+    height: 100%;
+    float: right;
+    border-radius: 30px;
+}
+
+#aboutUs div:nth-child(2) iframe {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+#aboutCourse {
+    margin-top: 50px;
+    float: none;
+    box-sizing: border-box;
+    width: 100%;
+    height: 400px;
+    padding: 0 20px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#aboutCourse div:nth-child(1) {
+    font-family: "Fantasy";
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+    height: 400px;
+    overflow: scroll;
+    float: left;
+    font-size: 20px;
+}
+
+#aboutCourse div:nth-child(2) img {
+    float: left;
+}
+
+#aboutCourse div:nth-child(2) {
+    box-sizing: border-box;
+    border-radius: 30px;
+    margin: 0;
+    padding: 0;
+    width: 40%;
+    height: 400px;
+    float: right;
+}

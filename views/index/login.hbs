@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="/jquery/jquery.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="/css/index/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+
+</head>
+{{!-- $('header').css('background-color', 'rgba(209, 189, 189, 0.4)') --}}
+
+<body>
+  <div id='consulting' border="solid" style="display: none;">
+    <div id='consultingContent'>
+      <p>Điền thông tin tại đây</p>
+      <hr style="  box-shadow: 0 10px 10px -10px #8c8c8c inset;">
+      <input type="text" id='consultingName' placeholder="Your Name">
+      <input type="text" id='consultingEmail' placeholder="Your email">
+      <input type='text' id='consultingPhone' placeholder="Your phone">
+      <input type='text' id='consultingPurpose' placeholder="Ask for">
+      <p id='xx'>Consulting via:</p>
+      <select id="consultingVia" placeholder="Your email">
+        <option value="email">Email</option>
+        <option value="phone">Phone</option>
+      </select>
+      <div>
+        <button onclick="consulting()">Submit</button>
+        <button onclick="$('#consulting').fadeOut(1000);"><i class="fas fa-times fa-lg"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loginForm" style="display: none;">
+    <div id="loginFormContent">
+      <p>Đăng nhập</p>
+      <hr style="  box-shadow: 0 10px 10px -10px #8c8c8c inset;">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <div>
+        <button onclick="logIn()">Log In</button>
+        <button onclick="$('#forGotPassOut').fadeIn(1000);">Quên mật khẩu?</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id='forGotPassOut' border="solid" style="display: none;">
+    <div id='forGotPassContent'>
+      <p>Điền thông tin tại đây</p>
+      <hr style="  box-shadow: 0 10px 10px -10px #8c8c8c inset;">
+      <input type="text" id='emailForgot' placeholder="Your email">
+      <input type='text' id='codeForgot' placeholder="Enter code">
+      <button onclick="getCode()">Get code through email</button>
+      <input type='text' id='newPassForgot' placeholder="New password">
+      <input type='text' id='confirmPassForgot' placeholder="Confirm password">
+      <div>
+        <button onclick="newPass()">Submit</button>
+        <button onclick="$('#forGotPassOut').fadeOut(1000);">Close</button>
+
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <ul style="float:left;font-family:cursive;">
+      <li style="width:200px"><i class="fas fa-graduation-cap" style="font-size:60px"></i>Sown English</li>
+    </ul>
+    <ul>
+      <li><a href="#">Home page</a></li>
+      <li><a onclick="$('html, body').animate({scrollTop: ($('#aboutCourse').offset().top-100)},1000)">About Course</a>
+      </li>
+      <li><a onclick="$('html, body').animate({scrollTop: ($('#aboutUs').offset().top-100)},1000)">About Us</a></li>
+      <li><a onclick="$('#loginForm').fadeIn(1000);">Log In</a></li>
+    </ul>
+  </header>
+  <div id='img1'>
+    <h1>Chào mừng đến với trung tâm Tiếng Anh Sown</h1>
+    <p>The most beautiful thing about learning is that no one take that away form you.</p>
+    <p>Study not what the world is doing, but what you can do for it.</p>
+    <p>Learning is the eye of the mind.</p>
+    <button onclick="$('#consulting').fadeIn(1000);">Khám Phá ngay</button>
+  </div>
+  <div id='aboutUs'>
+    <div>
+      <img style="max-width: 250px;max-height: 250px;position:inherit;"
+        src="http://amadosoftwaresolutions.com/wp-content/uploads/2018/01/about-us1.png"> Văn bản là một loại hình
+      phương tiện để ghi nhận, lưu giữ và truyền đạt các thông tin từ chủ thể này
+      sang chủ thể khác bằng ký hiệu gọi là chữ viết. Nó gồm tập hợp các câu có tính trọn vẹn về nội dung, hoàn chỉnh
+      về
+      hình thức, có tính liên kết chặt chẽ và hướng tới một mục tiêu giao tiếp nhất định.Văn bản là một loại hình
+      phương
+      tiện để ghi nhận, lưu giữ và truyền đạt các thông tin từ chủ thể này
+      sang chủ thể khác bằng ký hiệu gọi là chữ viết. Nó gồm tập hợp các câu có tính trọn vẹn về nội dung, hoàn chỉnh
+      về
+
+      <p>Bạn có thể xem chi tiết tại video bên cạnh =></p>
+    </div>
+    <div>
+      <iframe src="https://www.youtube.com/embed/KMxfz_OHckc" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+  <hr>
+  <div id='aboutCourse'>
+    <div>
+    </div>
+    <div>
+      <img style="max-width: 250px;max-height: 250px;"
+        src="https://image.freepik.com/free-vector/knowledge-tree-from-open-book-white-background_88114-67.jpg">
+      <p style="text-align: center;font-size:30px;">About Lesson Plan</p>
+      ướng tới một mục tiêu giao tiếp nhất định.Văn bản là một loại hình phương tiện để ghi nhận, lưu giữ và truyền đạt
+      các thông tin từ chủ thể này sang chủ thể khác bằng ký hiệu gọi là chữ viết. Nó gồm tập hợp các câu có tính trọn
+      vẹn về nội dung, hoàn chỉnh về hình thức, có tính liên kết chặt chẽ và hướng tới một mục tiêu giao tiếp nhất
+      định.Văn bản là một loại hình phương tiện để ghi nhận, lưu giữ và truyền đạt các thông tin từ chủ thể này sang chủ
+      thể khác bằng ký hiệu gọi là chữ viết. Nó gồm tập hợp các câu có tính trọn vẹn về nội dung, hoàn chỉnh về hình
+      thức, có tính l
+
+    </div>
+  </div>
+</body>
+
+
+<script>
+  $(window).on('click', function (e) {
+    if ($(e.target).is('#loginForm')) {
+      $('#loginForm').fadeOut(500);
+    }
+    if ($(e.target).is('#consulting')) {
+      $('#consulting').fadeOut(500);
+    }
+  });
+
+
+  function getCode() {
+    console.log($("#emailForgot").val())
+    $.ajax({
+      url: '/account/getCode',
+      method: 'get',
+      data: { email: $("#emailForgot").val() },
+      success: function (response) {
+        if (response.msg == 'success') {
+          alert("code Sent")
+        }
+
+        if (response.msg == 'email not found') {
+          invalidCode
+          alert('email not found');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+
+  function newPass() {
+    if ($("#newPassForgot").val() != $("#confirmPassForgot").val()) {
+      alert('new password and confirm password is not matched!');
+    } else {
+      var formData = {
+        email: $("#emailForgot").val(),
+        newPass: $("#newPassForgot").val(),
+        codeForgot: $("#codeForgot").val(),
+      }
+      $.ajax({
+        url: '/account/confirmPass',
+        method: 'post',
+        //      data:formData,
+        success: function (response) {
+          if (response.msg == 'success') {
+            alert("success")
+          }
+          if (response.msg == 'invalidCode') {
+            alert('Invalid Code! Try again.');
+          }
+        },
+        error: function (response) {
+          alert('server error');
+        }
+      })
+    }
+  }
+
+  function logIn() {
+    var formData = {
+      username: $("#username").val(),
+      password: $("#password").val()
+    }
+    $.ajax({
+      url: '/account/dologin',
+      method: 'post',
+      data: formData,
+      success: function (response) {
+        if (response.msg == 'success') {
+          window.location.href = '/account/' + response.data;
+        }
+        if (response.msg == 'invalid_Info') {
+          alert('Username or password is invalid');
+        }
+        if (response.msg == 'error') {
+          alert(' error');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+
+  function consulting() {
+    formData = {
+      name: $("#consultingName").val(),
+      Email: $("#consultingEmail").val(),
+      phone: $("#consultingPhone").val(),
+      purpose: $("#consultingPurpose").val(),
+      consultingTime: $("#consultingTime").val(),
+      consultingVia: $("#consultingVia").val(),
+    }
+    $.ajax({
+      url: '/consulting',
+      method: 'post',
+      dataType: 'json',
+      data: formData,
+      success: function (response) {
+        if (response.msg == 'success') {
+          alert(' success');
+        }
+        if (response.msg == 'error') {
+          alert(' error');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+</script>
+
+</html>

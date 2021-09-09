@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    padding: 2%;
+    margin: 0;
+}
+
+.tr {
+    display: table-row;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.td {
+    display: table-cell;
+    padding: 5px;
+    width: 300px;
+    border: #000000 solid 1px;
+    margin: 5px;
+}

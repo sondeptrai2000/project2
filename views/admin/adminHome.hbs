@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="/css/admin/menu.css">
+    <link rel="stylesheet" href="/css/admin/layOut.css">
+    <script src="/jquery/jquery.js"></script>
+    {{!-- jsonToExcel --}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="/css/admin/adminHome.css">
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <header> {{> adminHeader }}</header>
+
+    <div class="consultingAll" style="display:none;">
+        <div class="tr" style="font-size:15px;font-weight: bolder;">
+            <div class="td" id="consultingAllTile"></div>
+            <div class="td">
+                Time: <input type="month" id="consultingFilterByMonth" onchange="consultingAll('1')">
+            </div>
+            <div class="td" id="downloadExcel"></div>
+            <div class="td" onclick='$(".consultingAll").hide()'><i class="fas fa-times"></i></div>
+
+        </div>
+        <div class="tr" style="font-size:15px;font-weight: bolder;">
+            <div class="td">Name</div>
+            <div class="td">Email</div>
+            <div class="td">phone</div>
+            <div class="td">purpose</div>
+            <div class="td">consultingTime</div>
+            <div class="td">consultingVia</div>
+        </div>
+    </div>
+    <div id="card" style="display: none;">
+        <div class="tr" onclick='$("#card").hide()'><i class="fas fa-times"></i></div>
+    </div>
+</body>
+<script>
+
+    var jsonToExcel
+    //thông tin tư vấn
+    function consultingAll(check) {
+        if (check == '0') {
+            var date = new Date()
+            var start = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-01"
+            var end = date.getFullYear() + "-" + (date.getMonth() + 2).toString().padStart(2, "0") + "-01"
+            var month = date.getMonth() + 1
+
+        } else {
+            var date = new Date($('#consultingFilterByMonth').val())
+            var start = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-01"
+            var end = date.getFullYear() + "-" + (date.getMonth() + 2).toString().padStart(2, "0") + "-01"
+            var month = date.getMonth() + 1
+        }
+        $.ajax({
+            url: '/admin/consultingAll',
+            method: 'get',
+            dataType: 'json',
+            data: { start: start, end: end, month: month },
+            success: function (response) {
+                if (response.msg == 'success') {
+                    jsonToExcel = response.data
+                    $(".consultingAll .tr:not(:nth-child(1)):not(:nth-child(2))").remove();
+                    $("#consultingAllTile").text("Danh sách đăng ký tư vấn tháng " + response.month)
+                    if (response.data.length == 0) {
+                        $(".consultingAll").append("<div class='tr' ><div class='td'>Không có dữ liệu</div></div>")
+                    }
+                    $.each(response.data, function (index, data) {
+                        $(".consultingAll").append("<div class='tr' ><div class='td'>" + data.name + "</div><div class='td'>" + data.Email + "</div><div class='td'> " + data.phone + "</div><div class='td' >" + data.purpose + "</div><div class='td'>" + data.consultingTime + "</div><div class='td'>" + data.consultingVia + "</div></div>")
+                    })
+                    $("#downloadExcel").html("Xuất file excel: <button onclick=exportExcel('" + response.month + "')><i class='fas fa-download' style='color: black;'></i></button>")
+                    $(".consultingAll").fadeIn(500);
+                }
+                if (response.msg == 'error') {
+                    alert(' error');
+                }
+            },
+            error: function (response) {
+                alert('server error');
+            }
+        })
+
+    }
+
+    function exportExcel(month) {
+        var filename = 'Danh sách đăng ký tư vấn tháng ' + month + '.xlsx';
+        var ws = XLSX.utils.json_to_sheet(jsonToExcel);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "People");
+        XLSX.writeFile(wb, filename);
+    }
+
+
+</script>
+
+</html>

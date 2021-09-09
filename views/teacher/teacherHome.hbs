@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="/css/teacher/menu.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="/css/teacher/teacherHome.css">
+    <title>Home Teacher</title>
+</head>
+
+<body>
+
+    <div class="updateProfileOut" style="display:none">
+        <div class="updateProfile">
+            <input type='hidden' id='idProfileUpdate'>
+            <h1>Update profile</h1>
+            <div>
+                <img id='currentAvatar' style='max-width:auto;max-height:auto'></img>
+                <input type='hidden' id='avatarOldProfile'></input>
+                <input type='file' id='myFile'>
+                Name:<input id='usernameUpdate'></input>
+                Password:<input id='newPassWord' placeholder="Input New password if you wanna change"></input>
+                Gender:<input id='genderUpdate'></input>
+                Email:<input id='emailUpdate'></input>
+                Phone:<input id='phoneUpdate'></input>
+                BirthDay:<input id='birthdayUpdate' type="date"></input>
+                Address:<input id='addressUpdate'></input>
+                <button onclick="doUpdateProfile()">Update</button>
+            </div>
+        </div>
+    </div>
+    <header> {{> teacherHeader }}</header>
+    <div class="content">
+        <div id="teacherProfile">
+            <h1>Teacher profile</h1>
+            <img id='avatarProfile' src="" style="max-width:auto;max-height:auto'">
+            <p id='idProfile' style="display:none"></p>
+            <p id='usernameProfile'></p>
+            <p id='genderProfile'></p>
+            <p id='emailProfile'></p>
+            <p id='phoneProfile'></p>
+            <p id='birthdayProfile'></p>
+            <p id='addressProfile'></p>
+            <button onclick="updateProfile()">Update</button>
+        </div>
+        <div id="Schedual" style="text-align:left;">
+            <h1>Weekly Schedual</h1>
+            <select id='chonTuan' onchange="tuanoi()" style="padding:0;width:200px;height:30px"></select>
+            <div class="tr" id='ngay'></div>
+            <div class="tr">
+                <div class="td">Day of week</div>
+                <div class="td">Thứ 2</div>
+                <div class="td">Thứ 3</div>
+                <div class="td">Thứ 4</div>
+                <div class="td">Thứ 5</div>
+                <div class="td">Thứ 6</div>
+                <div class="td">Thứ 7</div>
+                <div class="td">Chủ nhật</div>
+            </div>
+            <div class="tr" id="time1">
+                <div class="td">7:30 đến 9:30</div>
+            </div>
+            <div class="tr" id="time2">
+                <div class="td">9:45 đến 11:45</div>
+            </div>
+            <div class="tr" id="time3">
+                <div class="td">13:30 đến 15:30</div>
+            </div>
+            <div class="tr" id="time4">
+                <div class="td">15:45 đến 17:45</div>
+            </div>
+            <div class="tr" id="time5">
+                <div class="td">18:15 đến 20:15</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script src="/js/teacher/teacherHome.js"></script>
+
+<script>
+    $(document).ready(function () {
+        test()
+        $('header li').hover(function () {
+            $(this).find("div").slideDown()
+        }, function () {
+            $(this).find("div").hide(500)
+        });
+
+        $(window).on('click', function (e) {
+            if ($(e.target).is('.updateProfileOut')) {
+                $('.updateProfileOut').slideUp(1500);
+            }
+        });
+
+    });
+
+
+</script>
+
+</html>

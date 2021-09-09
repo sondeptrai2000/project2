@@ -1,0 +1,138 @@
+* {
+    box-sizing: border-box;
+}
+
+.tr {
+    display: table-row;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.td {
+    display: table-cell;
+    padding: 2px;
+    width: auto;
+    border: #000000 solid 1px;
+}
+
+.rightSide img {
+    padding: 0;
+    margin: 0;
+    max-height: auto;
+    max-width: 100%;
+}
+
+.rightSide::-webkit-scrollbar,
+.leftSide::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
+}
+
+#option input,
+#option select,
+#option button {
+    font-size: 18px;
+}
+
+#option .tr {
+    height: 40px;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#option .td {
+    width: auto;
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-size: 20px;
+    padding-right: 20px;
+}
+
+.tableAccount {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+    width: 100%;
+    height: 440px;
+    font-size: 18px;
+}
+
+.tableAccount button {
+    font-size: 18px;
+}
+
+.tableAccount .tr {
+    overflow: auto;
+}
+
+.tableAccount img {
+    height: 60px;
+    width: 60px;
+    vertical-align: middle;
+}
+
+.createAccountOut,
+.updateFormOut {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    position: fixed;
+    text-align: center;
+    /* Stay in place */
+    background-color: rgb(215, 225, 230);
+    /* Fallback color */
+    background-color: rgba(209, 189, 189, 0.4);
+    /* Black w/ opacity */
+}
+
+#createAccount,
+#updateForm {
+    box-sizing: border-box;
+    background-color: whitesmoke;
+    height: 80%;
+    width: 50%;
+    margin: 0;
+    padding: 10px;
+    margin-left: 25%;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    font-size: 20px;
+}
+
+#createAccount::-webkit-scrollbar,
+#updateForm::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
+}
+
+.button {
+    font-size: 18px;
+}
+
+#createAccount div,
+#updateForm div {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    text-align: left;
+}
+
+#createAccount input,
+#updateForm input {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#createAccount select,
+#updateForm select {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 18px;
+}

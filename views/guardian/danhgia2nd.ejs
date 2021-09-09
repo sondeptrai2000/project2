@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/danhgia.css">
+    <title>Document</title>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+     <% data.forEach(function(data) { %>
+    
+        <form action="/faculty/rate2<%= data._id %>" method="POST">
+            <p>You can download the file here<a href="/download2/<%= data._id %>"><%= data.nameFile2 %></a></p>
+            <iframe src="/<%= data.filePath2 %>" class="viewfiles"></iframe>
+            <%if (data.filePathAnh2) { %>
+                <img  src="/<%= data.filePathAnh2 %>"alt="photo for report"/>
+            <% }  %>
+            
+            <div class="swap">
+                <p>Status: 
+            <select name="status" required>
+                <option value="<%= data.status2 %>"><%= data.status2 %></option>
+                <option value="Fail">Fail</option>
+                <option value="Pass">Pass</option>
+            </select>
+            </p>
+            <p>Comment: </p><textarea name="comment" id="" cols="50" rows="16" value="<%= data.comment2 %>" required><%= data.comment2 %></textarea>
+            <br>
+            <button type="submit" class="button">Submit</button>
+            </div>
+    </form>
+    <% }); %>
+</body>
+</html>
