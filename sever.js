@@ -15,7 +15,7 @@ app.use(cookieParser())
 app.get('/', function(req, res) {
     res.clearCookie("token");
     res.clearCookie("username");
-    res.render('index/SownEnglish')
+    res.render('index/SownEnglish');
 });
 var pathh = path.resolve(__dirname, 'public');
 app.use(express.static(pathh));
