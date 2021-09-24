@@ -7,7 +7,7 @@ mongoose.connect(url, {
     keepAlive: true,
     reconnectTries: 10
 }, function(err, result) {
-    if (err) console.log('AccountSchema lỗi')
+    if (err) console.log('AccountSchema lỗi');
 });
 
 const Schema = mongoose.Schema;
