@@ -14,28 +14,34 @@
 
     <div class="updateProfileOut" style="display:none">
         <div class="updateProfile">
-            <input type='hidden' id='idProfileUpdate'>
-            <h1>Update profile</h1>
             <div>
+                <h2>Update profile</h2>
                 <img id='currentAvatar' style='max-width:auto;max-height:auto'></img>
                 <input type='hidden' id='avatarOldProfile'></input>
+            </div>
+            <div style="text-align: left;">
+                <input type='hidden' id='idProfileUpdate'>
+
                 <input type='file' id='myFile'>
                 Name:<input id='usernameUpdate'></input>
                 Password:<input id='newPassWord' placeholder="Input New password if you wanna change"></input>
-                Gender:<input id='genderUpdate'></input>
+                Gender: <select id='genderUpdate'>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
                 Email:<input id='emailUpdate'></input>
                 Phone:<input id='phoneUpdate'></input>
-                BirthDay:<input id='birthdayUpdate' type="date"></input>
+                BirthDay:<input type="date" id='birthdayUpdate'></input>
                 Address:<input id='addressUpdate'></input>
-                <button onclick="doUpdateProfile()">Update</button>
-            </div>
+            </div> <button onclick="doUpdateProfile()">Update</button>
+
         </div>
     </div>
     <header> {{> teacherHeader }}</header>
     <div class="content">
         <div id="teacherProfile">
-            <h1>Teacher profile</h1>
-            <img id='avatarProfile' src="" style="max-width:auto;max-height:auto'">
+            <img id='avatarProfile' src="">
             <p id='idProfile' style="display:none"></p>
             <p id='usernameProfile'></p>
             <p id='genderProfile'></p>
@@ -45,60 +51,30 @@
             <p id='addressProfile'></p>
             <button onclick="updateProfile()">Update</button>
         </div>
-        <div id="Schedual" style="text-align:left;">
-            <h1>Weekly Schedual</h1>
-            <select id='chonTuan' onchange="tuanoi()" style="padding:0;width:200px;height:30px"></select>
+        <div id="Schedual">
+            <h2>Weekly Schedual</h2>
+            <label>Chose week: </label><select id='chonTuan' onchange="tuanoi()"></select>
             <div class="tr" id='ngay'></div>
-            <div class="tr">
+            <div class="tr" id='thu'>
                 <div class="td">Day of week</div>
-                <div class="td">Thứ 2</div>
-                <div class="td">Thứ 3</div>
-                <div class="td">Thứ 4</div>
-                <div class="td">Thứ 5</div>
-                <div class="td">Thứ 6</div>
-                <div class="td">Thứ 7</div>
-                <div class="td">Chủ nhật</div>
+                <div class="td">Monday</div>
+                <div class="td">Tuesday</div>
+                <div class="td">Wednesday</div>
+                <div class="td">Thursday</div>
+                <div class="td">Friday</div>
+                <div class="td">Saturday</div>
+                <div class="td">Sunday</div>
             </div>
-            <div class="tr" id="time1">
-                <div class="td">7:30 đến 9:30</div>
-            </div>
-            <div class="tr" id="time2">
-                <div class="td">9:45 đến 11:45</div>
-            </div>
-            <div class="tr" id="time3">
-                <div class="td">13:30 đến 15:30</div>
-            </div>
-            <div class="tr" id="time4">
-                <div class="td">15:45 đến 17:45</div>
-            </div>
-            <div class="tr" id="time5">
-                <div class="td">18:15 đến 20:15</div>
-            </div>
+            <div class="tr" id="time1"></div>
+            <div class="tr" id="time2"></div>
+            <div class="tr" id="time3"></div>
+            <div class="tr" id="time4"></div>
+            <div class="tr" id="time5"></div>
 
         </div>
     </div>
 </body>
 
 <script src="/js/teacher/teacherHome.js"></script>
-
-<script>
-    $(document).ready(function () {
-        test()
-        $('header li').hover(function () {
-            $(this).find("div").slideDown()
-        }, function () {
-            $(this).find("div").hide(500)
-        });
-
-        $(window).on('click', function (e) {
-            if ($(e.target).is('.updateProfileOut')) {
-                $('.updateProfileOut').slideUp(1500);
-            }
-        });
-
-    });
-
-
-</script>
 
 </html>

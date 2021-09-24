@@ -1,11 +1,7 @@
 var mongoose = require("mongoose");
-//const { stringify } = require("querystring");
-var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://minhson123:minhson123@cluster0.v0phx.mongodb.net/project?retryWrites=true&w=majority";
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, function(err, result) { if (err) console.log('studyRoute lỗi') });
+
 const Schema = mongoose.Schema;
 const studyRoute = new Schema({
     routeName: String,
@@ -14,8 +10,6 @@ const studyRoute = new Schema({
         stage: String,
         routeabcd: []
     }],
-}, {
-    collection: 'studyRoute'
-});
+}, { collection: 'studyRoute' });
 var studyRouteModel = mongoose.model('studyRoute', studyRoute);
 module.exports = studyRouteModel

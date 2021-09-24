@@ -5,17 +5,12 @@ var jwt = require('jsonwebtoken');
 
 let checkLogin = async(req, res, next) => {
     try {
-        let user = req.body.username;
-        await AccountModel.findOne({
-            username: user
-        }).then(user => {
-            if (!user) {
-                res.json({ msg: 'invalid_Info', message: "Username or password is invalid" });
-            } else {
-                req.user = user
-                next();
-            }
-        })
+        var user = await AccountModel.findOne({ username: req.body.username }).lean();
+        if (!user) res.json({ msg: 'invalid_Info' });
+        if (user) {
+            req.user = user
+            next();
+        }
     } catch (error) {
         console.log(error)
         res.json({ message: "error" })
@@ -27,7 +22,7 @@ let checkAuth = async(req, res, next) => {
     try {
         var token = req.cookies.token
         let decodeAccount = jwt.verify(token, 'minhson')
-        let user = await AccountModel.findOne({ _id: decodeAccount._id })
+        let user = await AccountModel.findOne({ _id: decodeAccount._id }).lean();
         if (user) {
             next();
         } else {

@@ -6,5 +6,6 @@ messRoute.post('/makeConnection', messController.makeConnection, messController.
 messRoute.get('/getMessenger', messController.getMessenger)
 messRoute.get('/chatForm', messController.chatForm)
 messRoute.post('/addChat', messController.addChat)
+messRoute.get('/unreadMess', messController.unreadMess)
 
 module.exports = messRoute

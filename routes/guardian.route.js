@@ -4,23 +4,17 @@ var guardianController = require('../controller/guardian.controller')
 
 
 
-guardianRouter.get('/',guardianController.guardianHome)
+guardianRouter.get('/', guardianController.guardianHome)
 
-//liên quan đến  tài khoản
-guardianRouter.get('/guardianProfile',guardianController.guardianProfile)
+guardianRouter.get('/getSchedule', guardianController.getSchedule)
 
-//liên quan đến lớp học
-guardianRouter.get('/allClass',guardianController.allClass)
-guardianRouter.get('/learningProgress',guardianController.learningProgress)
+//All class
+guardianRouter.get('/getClass', guardianController.getClass)
+guardianRouter.get('/myAttended', guardianController.myAttended)
+guardianRouter.get('/getTeacherProfile', guardianController.getTeacherProfile)
+guardianRouter.get('/allClassStudent', guardianController.allClassStudent)
+guardianRouter.get('/allClass/:id', guardianController.allClass)
 
-
-//liên quan đến hoạt động ngoại khóa
-guardianRouter.get('/allextracurricularActivities',guardianController.allextracurricularActivities)
-
-//chat
-guardianRouter.get('/allChat',guardianController.allChat)
-guardianRouter.get('/connectToChat',guardianController.connectToChat)
-guardianRouter.get('/chatConversation',guardianController.chatConversation)
 
 
 module.exports = guardianRouter

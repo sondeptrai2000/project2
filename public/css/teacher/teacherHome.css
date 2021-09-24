@@ -16,19 +16,36 @@ body {
     box-sizing: border-box;
     margin: 0;
     margin-top: 10px;
-    height: 520px;
+    height: 600px;
     padding: 0;
 }
 
+
+/* chỉnh teacherProfile trang cá nhân */
+
 #teacherProfile {
+    font-size: 18px;
     padding: 30px;
     width: 30%;
     height: 100%;
     float: left;
+    text-align: center;
     border: solid;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
+
+#teacherProfile img {
+    height: 250px;
+    width: 250px;
+}
+
+#teacherProfile button {
+    font-size: 18px;
+}
+
+
+/* chỉnh Schedual lịch giảng dạy */
 
 #Schedual {
     width: 69%;
@@ -38,21 +55,55 @@ body {
     border: solid;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    font-size: 17px;
+    text-align: left;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
 }
+
+#chonTuan {
+    margin-bottom: 10px;
+    font-size: 18px;
+    width: auto;
+}
+
+#Schedual h2 {
+    font-size: 40px;
+    margin: 20px 0;
+    margin-bottom: 10px;
+}
+
+#Schedual label {
+    font-size: 24px;
+}
+
+
+/* chỉnh tr td thuộc tính cột hàng */
 
 .tr {
     display: table-row;
-    padding: 5px;
     overflow: hidden;
 }
 
 .td {
     display: table-cell;
-    padding: 5px;
+    padding: 10px;
     width: 300px;
     border: #000000 solid 1px;
     margin: 5px;
+    vertical-align: middle;
+    text-align: center;
 }
+
+#ngay,
+#thu {
+    background-color: gray;
+    color: white;
+}
+
+
+/* chỉnh updateProfileOut cập nhật tài khoản */
 
 .updateProfileOut {
     margin: 0;
@@ -68,26 +119,19 @@ body {
     overflow: auto;
 }
 
-html,
-body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
 .updateProfile {
-    border: lightblue 4px solid;
-    box-shadow: 10px 10px 10px 10px lightblue;
     width: 40%;
     height: auto;
     border-radius: 30px;
-    background-color: steelblue;
+    background-color: whitesmoke;
     height: 600px;
     margin-left: 30%;
     overflow: auto;
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
     font-size: 20px;
-    text-align: left;
+    text-align: center;
+    padding: 20px;
 }
 
 .updateProfile::-webkit-scrollbar {
@@ -96,7 +140,29 @@ body {
 }
 
 .updateProfile input {
+    width: 100%;
     font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.updateProfile select {
+    width: 100%;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.updateProfile img {
+    width: 250px;
+    height: 250px;
+}
+
+.updateProfile button {
+    font-size: 20px;
+}
+
+.updateProfile h2 {
+    margin: 0;
+    margin-bottom: 10px;
 }
 
 #teacherProfile {
@@ -105,7 +171,8 @@ body {
     -ms-overflow-style: none;
 }
 
-#teacherProfile::-webkit-scrollbar {
+#teacherProfile::-webkit-scrollbar,
+#Schedual::-webkit-scrollbar {
     width: 0 !important;
     display: none;
 }

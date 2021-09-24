@@ -1,0 +1,161 @@
+* {
+    box-sizing: border-box;
+}
+
+button {
+    font-size: 18px;
+}
+
+body {
+    width: 100%;
+    background-image: url("/images/background.jpg");
+    background-repeat: repeat-x;
+    padding: 2%;
+    margin: 0;
+    margin-top: 1%;
+    z-index: 1;
+}
+
+.content {
+    box-sizing: border-box;
+    margin: 0;
+    margin-top: 10px;
+    height: 600px;
+    padding: 20px;
+    border-radius: 20px;
+    border: solid;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+
+/* chỉnh tableClass bảng lớp */
+
+#tableClass {
+    font-size: 18px;
+}
+
+#tableClass button {
+    width: 100%;
+    margin: 2px 0px;
+}
+
+
+/* chỉnh option thanh lựa chọn */
+
+
+/* chỉnh option thanh lựa chọn */
+
+#option {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+#option input,
+#option select,
+#option button {
+    font-size: 18px;
+}
+
+#option .tr {
+    height: 40px;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#option .td {
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-size: 20px;
+    padding-right: 20px;
+}
+
+#tableClass .tr:nth-child(1),
+.studentList .tr:nth-child(1),
+.myAttendContent .tr:nth-child(1) {
+    background-color: gray;
+    color: white;
+    font-size: 20px;
+}
+
+.tr {
+    display: table-row;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.td {
+    display: table-cell;
+    padding: 5px;
+    width: 300px;
+    border: #000000 solid 1px;
+    margin: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.studentListOut,
+.myAttendOut,
+.teacherIn4Out {
+    width: 100%;
+    height: 100%;
+    padding: 5%;
+    z-index: 10;
+    position: fixed;
+    text-align: center;
+    /* Stay in place */
+    background-color: rgb(215, 225, 230);
+    /* Fallback color */
+    background-color: rgba(209, 189, 189, 0.4);
+    /* Black w/ opacity */
+    overflow: scroll;
+    vertical-align: middle;
+}
+
+.studentList,
+.myAttendContent,
+.teacherIn4 {
+    background-color: whitesmoke;
+    padding: 2%;
+    margin: 0;
+    margin-left: 25%;
+    height: 100%;
+    width: 50%;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    font-size: 18px;
+}
+
+
+/* chỉnh teacher profile */
+
+.teacherIn4 {
+    height: 60%;
+    width: 40%;
+    margin-left: 30%;
+    text-align: center;
+}
+
+
+/* chỉnh studentListContent ảnh cho danh sách học sinh */
+
+.studentList img {
+    height: 100px;
+    width: 100px;
+}
+
+
+/* chỉnh ẩn thanh cuộn */
+
+.studentListOut::-webkit-scrollbar,
+.myAttendOut::-webkit-scrollbar,
+.teacherIn4Out::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
+}

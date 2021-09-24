@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="/css/messenger/chatBox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <title>Chat box</title>
+</head>
+
+<body>
+    <header>
+        <%- include('../header/'+role +'Header.hbs'); %>
+    </header>
+    <div class="chatForm">
+        <div class="chatHistory">
+            <div class="chatOption">
+                <h2>Chat</h2>
+                <input type='text' id='addChat' placeholder='Find or add conversation by phone or email'><button onclick='addChat() '>Search</button>
+            </div>
+            <div class="history">
+
+            </div>
+        </div>
+        <div class='chat'>
+            <div class='chatTitle'></div>
+            <div class="chatBox">
+                <div id='messContent'></div>
+            </div>
+            <div class="sendMess">
+                <form id="messengerSubmit">
+                    <input id="mess" name='mess' type="text" required/>
+                    <input type="submit" class='button' name="submit" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatInformation" style="display: none;">
+        <input id="allID" type="text" value="" />
+        <input id="receiverID" type="text" value="" />
+        <input id="receiverName" type="text" value="" />
+        <input id="senderID" type="text" value="<%=senderID %>" />
+        <input id="senderName" type="text" value="<%=senderName %>" />
+        <input id="_idRoom" type="text" value="" />
+        <img id="receiverAva" style='max-width:150px;max-height:200px'>
+        <img id="senderAva" src="<%=senderAvatar %>" style='max-width:150px;max-height:200px'>
+    </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/messenger/emptyChat.js"></script>
+
+</html>

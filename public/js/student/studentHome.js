@@ -5,32 +5,54 @@ $(document).ready(function() {
     //lấy thông tin cá nhân
     studentProfile()
         //lấy lịch học
-    test()
-        //hiệu ứng menu
-    $('header li').hover(function() {
-        $(this).find("div").slideDown()
-    }, function() {
-        $(this).find("div").hide(500)
-    });
-    //thoát update form
-    $(window).on('click', function(e) {
-        if ($(e.target).is('.updateProfileOut')) {
-            $('.updateProfileOut').slideUp(1500);
-        }
-    });
+    test();
+    unReadMess();
 
-    $('#myFile').on('change', function() {
-        var filereader = new FileReader();
-        filereader.onload = function(event) {
-            fileData = event.target.result;
-            var dataURL = filereader.result;
-            $("#output").attr("src", dataURL);
-        };
-        myFile = $('#myFile').prop('files')[0];
-        console.log('myfile', myFile)
-        filereader.readAsDataURL(myFile)
-    });
+
 });
+//hiệu ứng menu
+$('header li').hover(function() {
+    $(this).find("div").slideDown()
+}, function() {
+    $(this).find("div").hide(500)
+});
+//thoát update form
+$(window).on('click', function(e) {
+    if ($(e.target).is('.updateProfileOut')) {
+        $('.updateProfileOut').slideUp(1500);
+    }
+});
+
+$('#myFile').on('change', function() {
+    var filereader = new FileReader();
+    filereader.onload = function(event) {
+        fileData = event.target.result;
+        var dataURL = filereader.result;
+        $("#currentAvatar").attr("src", dataURL);
+    };
+    myFile = $('#myFile').prop('files')[0];
+    console.log('myfile', myFile)
+    filereader.readAsDataURL(myFile)
+});
+
+//lấy số tin nhắn chưa đọc
+function unReadMess() {
+    $.ajax({
+        url: '/messenger/unreadMess',
+        method: 'get',
+        dataType: 'json',
+        data: {},
+        success: function(response) {
+            if (response.msg == 'success') {
+                $("#UnreadMessages").html(response.unReadMess)
+            }
+        },
+        error: function(response) {
+            alert('server error');
+        }
+    })
+}
+
 //lấy lịch học 
 function test() {
     //lấy các ngày trong năm
@@ -40,7 +62,7 @@ function test() {
         var lol = date.getFullYear() + "-" + month + "-" + date.getDate().toString().padStart(2, "0");
         arr.push({ "ngay": lol, "thu": (date.getDay() + 1) });
     }
-    //chia thành các tuần từ thứ 2 đến CN
+    //chia thành các tuần từ thứ 2 to CN
     var tuan = []
     var check = false
     var check2 = false
@@ -48,14 +70,14 @@ function test() {
         var d = new Date(arr[i].ngay);
         var n = d.getDay();
         if (arr[i].thu != 2 && i < 7 && check2 == false) {
-            tuan.push(arr[i].ngay + ' đến ' + arr[7 - n].ngay)
+            tuan.push(arr[i].ngay + ' to ' + arr[7 - n].ngay)
             check2 = true
         }
         if (arr[i].thu == 2 && (i + 7) < arr.length) {
-            tuan.push(arr[i].ngay + ' đến ' + arr[i + 6].ngay)
+            tuan.push(arr[i].ngay + ' to ' + arr[i + 6].ngay)
         }
         if (arr[i].thu != 2 && (i + 7) > arr.length && check == false) {
-            tuan.push(arr[i + 1].ngay + ' đến ' + arr[arr.length - 1].ngay)
+            tuan.push(arr[i + 1].ngay + ' to ' + arr[arr.length - 1].ngay)
             check = true
         }
     }
@@ -67,8 +89,8 @@ function test() {
     var now = date1.getFullYear() + "-" + month.toString().padStart(2, "0") + "-" + date1.getDate();
     for (var u = 0; u < tuan.length; u++) {
         $("#chonTuan").append('<option value="' + tuan[u] + '">' + tuan[u] + '</option>');
-        dauTuan = tuan[u].split(" đến ")[0]
-        cuoiTuan = tuan[u].split(" đến ")[1]
+        dauTuan = tuan[u].split(" to ")[0]
+        cuoiTuan = tuan[u].split(" to ")[1]
         if ((dauTuan <= now) && (now <= cuoiTuan)) {
             $('#chonTuan option:selected').removeAttr('selected');
             $("#chonTuan option[value='" + tuan[u] + "']").attr('selected', 'selected');
@@ -89,14 +111,11 @@ var getDaysArray = function(start, end) {
 //lấy thông tin lịch trình học, làm việc
 function tuanoi() {
     var tuan = $("#chonTuan").val()
-    var dauTuan = tuan.split(" đến ")[0]
-    var cuoiTuan = tuan.split(" đến ")[1]
-    var formData = {
-            dauTuan: dauTuan,
-            cuoiTuan: cuoiTuan
-        }
-        //chỉnh fomat date giống Type Date trong mongoDB để so sánh 
-        // link src hàm moment ở head
+    var dauTuan = tuan.split(" to ")[0]
+    var cuoiTuan = tuan.split(" to ")[1]
+
+    //chỉnh fomat date giống Type Date trong mongoDB để so sánh 
+    // link src hàm moment ở head
     var start = moment(new Date(dauTuan)).format('YYYY-MM-DD[T00:00:00.000Z]');
     var end = moment(new Date(cuoiTuan)).format('YYYY-MM-DD[T00:00:00.000Z]');
     var a = getDaysArray(new Date(dauTuan), new Date(cuoiTuan));
@@ -110,20 +129,20 @@ function tuanoi() {
         url: '/student/getSchedule',
         method: 'get',
         dataType: 'json',
-        data: formData,
+        data: { dauTuan: dauTuan },
         success: function(response) {
             if (response.msg == 'success') {
-                $("#time1").html('<div class="td">7:30 đến 9:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time2").html('<div class="td">9:45 đến 11:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time3").html('<div class="td">13:30 đến 15:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time4").html('<div class="td">15:45 đến 17:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time5").html('<div class="td">18:15 đến 20:15</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time1").html('<div class="td">7:30 to 9:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time2").html('<div class="td">9:45 to 11:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time3").html('<div class="td">13:30 to 15:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time4").html('<div class="td">15:45 to 17:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time5").html('<div class="td">18:15 to 20:15</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
                 $.each(response.classInfor, function(index, classInfor) {
                     $.each(classInfor.schedule, function(index, schedule) {
                         if (start <= schedule.date && schedule.date <= end) {
                             //ghi thông tin lịch học, làm việc vào bảng
                             var caLam = typeTime(schedule.time)
-                            $("#" + caLam + " div:nth-child(" + schedule.day + ")").append("<a href='/student/allClass/" + classInfor._id + "'>Class: " + classInfor.className + "</a> Room: " + schedule.room)
+                            $("#" + caLam + " div:nth-child(" + schedule.day + ")").append("<a href='/student/allClass/" + classInfor._id + "'>" + classInfor.className + "</a><br> Room: " + schedule.room)
                         }
                     });
                 });
@@ -140,19 +159,18 @@ function tuanoi() {
 //phân ca để dưa vào bảng lịch học
 function typeTime(time) {
     var caLam
-    console.log(time)
-    if (time == "7:30 đến 9:30") caLam = "time1"
-    if (time == "9:45 đến 11:45") caLam = "time2"
-    if (time == "13:30 đến 15:30") caLam = "time3"
-    if (time == "15:45 đến 17:45") caLam = "time4"
-    if (time == "18:15 đến 20:15") caLam = "time5"
+    if (time == "7:30 to 9:30") caLam = "time1"
+    if (time == "9:45 to 11:45") caLam = "time2"
+    if (time == "13:30 to 15:30") caLam = "time3"
+    if (time == "15:45 to 17:45") caLam = "time4"
+    if (time == "18:15 to 20:15") caLam = "time5"
     return caLam
 }
 
 //lấy thông tin học sinh
 function studentProfile() {
     $.ajax({
-        url: '/teacher/teacherProfile',
+        url: '/account/Profile',
         method: 'get',
         dataType: 'json',
         data: {},
@@ -179,14 +197,16 @@ function studentProfile() {
 }
 //đưa thông tin cũ vào form update thông tin
 function updateProfile() {
-    $("#avatarOldProfile").val($('#avatarProfile').attr('src'));
     $("#currentAvatar").attr("src", $('#avatarProfile').attr('src'));
-    $("#usernameUpdate").val($("#usernameProfile").text());
-    $("#genderUpdate").val($("#genderProfile").text());
-    $("#emailUpdate").val($("#emailProfile").text());
-    $("#phoneUpdate").val($("#phoneProfile").text());
-    $("#birthdayUpdate").val($("#birthdayProfile").text());
-    $("#addressUpdate").val($("#addressProfile").text());
+    $("#avatarOldProfile").val($('#avatarProfile').attr('src'));
+    $("#idProfileUpdate").html($("#idProfile").text());
+    $("#usernameUpdate").val($("#usernameProfile").text().split("Full Name: ")[1]);
+    $('#genderUpdate option:selected').removeAttr('selected');
+    $("#genderUpdate option[value='" + $("#genderProfile").text().split("Gender: ")[1] + "']").attr('selected', 'selected');
+    $("#emailUpdate").val($("#emailProfile").text().split("Email: ")[1]);
+    $("#phoneUpdate").val($("#phoneProfile").text().split("Phone: ")[1]);
+    $("#birthdayUpdate").val($("#birthdayProfile").text().split("BirthDay: ")[1]);
+    $("#addressUpdate").val($("#addressProfile").text().split("Address: ")[1]);
     $(".updateProfileOut").toggle(2000);
 }
 
@@ -197,16 +217,16 @@ function doUpdateProfile() {
     }
     var password = $("#newPassWord").val()
     var formData1 = {
-        sex: $("#genderUpdate").val().split("Gender: ")[1],
-        username: $("#usernameUpdate").val().split("Full Name: ")[1],
-        email: $("#emailUpdate").val().split("Email: ")[1],
-        phone: $("#phoneUpdate").val().split("Phone: ")[1],
-        address: $("#addressUpdate").val().split("Address: ")[1],
-        birthday: $("#birthdayUpdate").val().split("BirthDay: ")[1],
+        sex: $("#genderUpdate").val(),
+        username: $("#usernameUpdate").val(),
+        email: $("#emailUpdate").val(),
+        phone: $("#phoneUpdate").val(),
+        address: $("#addressUpdate").val(),
+        birthday: $("#birthdayUpdate").val(),
         avatar: $('#currentAvatar').attr('src'),
     };
     $.ajax({
-        url: '/student/doeditAccount',
+        url: '/account/doeditAccount',
         method: 'post',
         dataType: 'json',
         data: {

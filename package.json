@@ -1,16 +1,14 @@
 {
     "name": "test",
     "version": "1.0.0",
-    "engines": {
-        "node": "14.x"
-    },
+    "engines": { "node": "14.x" },
     "description": "",
     "main": "sever.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node sever.js"
     },
-    "author": "",
+    "author": "Nguyen Minh Son",
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.0.1",

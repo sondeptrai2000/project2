@@ -1,0 +1,163 @@
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.leftSide {
+    padding: 2%;
+    margin: 0;
+    height: 100%;
+    width: 30%;
+    background-color: whitesmoke;
+    font-size: 25px;
+    text-align: center;
+}
+
+.leftSide p {
+    text-align: left;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.leftSide input {
+    margin: 10px 0;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 5px;
+    height: 6%;
+}
+
+.leftSide button {
+    margin: 10px 0;
+    width: 100%;
+    font-size: 20px;
+    background-color: chartreuse;
+    height: 7%;
+    border-radius: 10px;
+}
+
+.leftSide a {
+    text-align: center;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 20px;
+}
+
+.rightSide {
+    padding: 0;
+    margin: 0;
+    width: 70%;
+    background-image: url("/img/index5.jpg");
+    background-repeat: repeat-y;
+    background-size: 100%;
+}
+
+.rightSideContent {
+    height: 50%;
+    width: 100%;
+    padding: 30px;
+    margin-top: 5%;
+    color: palegoldenrod;
+    font-size: 20px;
+}
+
+#forGotPassOut {
+    padding: 5%;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    position: fixed;
+    /* Stay in place */
+    background-color: rgb(215, 225, 230);
+    /* Fallback color */
+    background-color: rgba(209, 189, 189, 0.4);
+    /* Black w/ opacity */
+}
+
+#forGotPassContent {
+    padding: 15px;
+    border: lightblue 4px solid;
+    box-shadow: 10px 10px 10px 10px lightblue;
+    width: 30%;
+    height: auto;
+    margin-left: 35%;
+    border-radius: 30px;
+}
+
+#forGotPassContent p {
+    padding-left: 5%;
+    display: inline-block;
+    /* background: rgba(139, 69, 110, 0.8); */
+    font-family: "Fantasy";
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+    height: 40px;
+    margin: 0;
+    background-color: white;
+    opacity: 0.8;
+}
+
+#forGotPassContent input {
+    opacity: 0.8;
+    width: 100%;
+    height: 50px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-family: "Fantasy";
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#forGotPassContent input::placeholder {
+    opacity: 1;
+    color: rgb(0, 0, 0);
+    height: 30px;
+    padding: 0;
+    padding-left: 5%;
+}
+
+#forGotPassContent div {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+#forGotPassContent button {
+    width: auto;
+    height: 50px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+#forGotPassContent {
+    background: repeat url("https://img.pikbest.com/png-images/qiantu/cartoon-character-kid-studying-hard_2722904.png!c1024wm0/compress/true/progressive/true/format/webp/fw/1024");
+    background-size: 100%;
+    padding: 10px;
+}
+
+#forGotPassContent {
+    padding: 15px;
+    border: lightblue 4px solid;
+    box-shadow: 10px 10px 10px 10px lightblue;
+    width: 30%;
+    height: auto;
+    margin-left: 35%;
+    border-radius: 30px;
+}

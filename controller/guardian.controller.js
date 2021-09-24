@@ -1,75 +1,94 @@
-var bcrypt = require('bcrypt');
-const saltRounds = 10;
-const { google } = require("googleapis")
-var path = require('path');
-
-//set up kết nối tới ggdrive
-const KEYFILEPATH = path.join(__dirname, 'service_account.json')
-const SCOPES = ['https://www.googleapis.com/auth/drive'];
-
-const auth = new google.auth.GoogleAuth(
-    opts = {
-        keyFile: KEYFILEPATH,
-        scopes: SCOPES
-    }
-);
-const driveService = google.drive(options = { version: 'v3', auth });
+const { JsonWebTokenError } = require('jsonwebtoken');
+const AccountModel = require('../models/account');
+const ClassModel = require('../models/class');
+var jwt = require('jsonwebtoken');
 
 
-async function uploadFile(name, rootID, path) {
-    var id = []
-    id.push(rootID)
-    var responese = await driveService.files.create(param = {
-        resource: {
-            "name": name,
-            "parents": id
-        },
-        media: {
-            body: fs.createReadStream(path = path)
-        },
-    })
-    await driveService.permissions.create({
-        fileId: responese.data.id,
-        requestBody: {
-            role: 'reader',
-            type: 'anyone',
-        },
-    });
-    return responese.data.id
-}
 class guardianController {
     guardianHome(req, res) {
         res.json('Trang chủ guardian')
     }
 
-    guardianProfile(req, res) {
-        res.json('Trang thông tin cá nhân của giáo viên')
+    async myAttended(req, res) {
+        try {
+            let token = req.cookies.token
+            let decodeAccount = jwt.verify(token, 'minhson')
+            var guardian = await AccountModel.findOne({ _id: decodeAccount }, { relationship: 1 }).lean()
+            var data = await ClassModel.find({ _id: req.query.classID }, { schedule: 1, "studentID.absentRate": 1 }).populate({ path: "schedule.attend.studentID", select: { username: 1, avatar: 1 } }).lean();
+            return res.json({ msg: 'success', data: data, studentID: guardian.relationship });
+        } catch (e) {
+            console.log(e)
+            res.json({ msg: 'error' });
+
+        }
     }
 
     allClass(req, res) {
-        res.json('Trang thông tin các khóa học con đã học + đánh giá')
+        var params = req.params.id
+        var studentName = req.cookies.username
+        if (params != "0") return res.render('guardian/allClass', { params, studentName })
+        if (params == "0") return res.render('guardian/allClass', { studentName })
     }
 
-    learningProgress(req, res) {
-        res.json('Trang thông tin tiến độ học tập của con')
+
+    async getClass(req, res) {
+        try {
+            let token = req.cookies.token
+            let decodeAccount = jwt.verify(token, 'minhson')
+            var guardian = await AccountModel.findOne({ _id: decodeAccount }, { relationship: 1 }).lean()
+            var classInfor = await AccountModel.find({ _id: guardian.relationship }, { classID: 1 }).populate({
+                path: 'classID',
+                select: '-schedule',
+                populate: { path: 'teacherID', select: 'username' }
+            }).lean()
+            return res.json({ msg: 'success', classInfor, studentID: guardian.relationship });
+        } catch (e) {
+            console.log(e)
+            res.json({ msg: 'error' });
+        }
     }
 
-    allextracurricularActivities(req, res) {
-        res.json('Trang xem tất cả các hoạt động ngoại khóa mà con đã tham gia + đánh giá')
+
+    getTeacherProfile(req, res) {
+        AccountModel.find({ _id: req.query.abc }, { username: 1, email: 1, avatar: 1 }).lean().exec(function(err, data) {
+            if (err) {
+                return res.json({ msg: 'error' });
+            } else {
+                return res.json({ msg: 'success', data: data });
+            }
+        })
     }
 
-    allChat(req, res) {
-        res.json('Tất cả những cuộc trò chuyện')
+    allClassStudent(req, res) {
+        ClassModel.find({ _id: req.query.abc }).populate('studentID.ID', { username: 1, email: 1, avatar: 1 }).lean().exec((err, selectedClassInfor) => {
+            if (err) {
+                return res.json({ msg: 'error' });
+            } else {
+                return res.json({ msg: 'success', data: selectedClassInfor });
+            }
+        })
     }
 
-    connectToChat(req, res) {
-        res.json('chọn người để trò chuyện')
-    }
 
-    chatConversation(req, res) {
-        res.json('Thực hiện cuộc trò chuyện')
-    }
 
+
+
+    async getSchedule(req, res) {
+        try {
+            var token = req.cookies.token
+            var decodeAccount = jwt.verify(token, 'minhson')
+            var studentID = decodeAccount._id
+            var guardian = await AccountModel.findOne({ _id: decodeAccount }, { relationship: 1 }).lean()
+            var student = await AccountModel.findOne({ _id: guardian.relationship }, { classID: 1 }).lean()
+            var studentID = guardian.relationship
+            var sosanh = new Date(req.query.dauTuan)
+            var classInfor = await ClassModel.find({ _id: { $in: student.classID }, startDate: { $lte: sosanh }, endDate: { $gte: sosanh } }).lean()
+            return res.json({ msg: 'success', classInfor, studentID });
+        } catch (e) {
+            console.log(e)
+            return res.json({ msg: 'error' });
+        }
+    }
 
 }
 module.exports = new guardianController

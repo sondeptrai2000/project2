@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="/jquery/jquery.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="/css/index/SownEnglish.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+
+</head>
+
+<body>
+  <div id='forGotPassOut' border="solid" style="display: none;">
+    <div id='forGotPassContent'>
+      <p>Điền thông tin tại đây</p>
+      <hr style="  box-shadow: 0 10px 10px -10px #8c8c8c inset;">
+      <input type="text" id='emailForgot' placeholder="Your email">
+      <input type='text' id='codeForgot' placeholder="Enter code">
+      <button onclick="getCode()">Get code through email</button>
+      <input type='text' id='newPassForgot' placeholder="New password">
+      <input type='text' id='confirmPassForgot' placeholder="Confirm password">
+      <div>
+        <button onclick="newPass()">Submit</button>
+        <button onclick="$('#forGotPassOut').fadeOut(1000);">Close</button>
+
+      </div>
+    </div>
+  </div>
+  <div class='body'>
+    <div class='leftSide'>
+      <p style="margin-bottom: 60px;font-family:Florence, cursive;font-size:35px;">Sown English</p>
+      <p>Log in to your account</p>
+      <hr style="  box-shadow: 0 10px 10px -10px #8c8c8c inset;">
+      <p> Username</p>
+      <input type="text" id="username" placeholder="Username">
+      <p>Password</p>
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="logIn()">Log In</button>
+      <a onclick="$('#forGotPassOut').fadeIn(1000);">Forgot password</a>
+    </div>
+
+
+    <div class='rightSide'>
+      <div class='rightSideContent'>
+        <h1>Welcome to Sown English Center</h1>
+        <p>The most beautiful thing about learning is that no one take that away form you.</p>
+        <p>Study not what the world is doing, but what you can do for it.</p>
+        <p>Learning is the eye of the mind.</p>
+        <a onclick="$('#consulting').fadeIn(1000);" style="cursor:pointer"><u>Khám Phá ngay</u></a>
+        <p>Contact us: 0123456789</p>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<script>
+  $(window).on('click', function (e) {
+    if ($(e.target).is('#loginForm')) {
+      $('#loginForm').fadeOut(500);
+    }
+    if ($(e.target).is('#consulting')) {
+      $('#consulting').fadeOut(500);
+    }
+  });
+
+
+  function getCode() {
+    console.log($("#emailForgot").val())
+    $.ajax({
+      url: '/account/getCode',
+      method: 'get',
+      data: { email: $("#emailForgot").val() },
+      success: function (response) {
+        if (response.msg == 'success') {
+          alert("code Sent")
+        }
+
+        if (response.msg == 'email not found') {
+          alert('email not found');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+
+  function newPass() {
+    if ($("#newPassForgot").val() != $("#confirmPassForgot").val()) {
+      alert('new password and confirm password is not matched!');
+    } else {
+      var formData = {
+        email: $("#emailForgot").val(),
+        newPass: $("#newPassForgot").val(),
+        codeForgot: $("#codeForgot").val(),
+      }
+      $.ajax({
+        url: '/account/confirmPass',
+        method: 'post',
+        data: formData,
+        success: function (response) {
+          if (response.msg == 'success')   alert("success")
+          if (response.msg == 'invalidCode') alert('Invalid Code! Try again.');
+        },
+        error: function (response) {
+          alert('server error');
+        }
+      })
+    }
+  }
+
+  function logIn() {
+    console.log("vào")
+    var formData = {
+      username: $("#username").val(),
+      password: $("#password").val()
+    }
+    $.ajax({
+      url: '/account/dologin',
+      method: 'post',
+      data: formData,
+      success: function (response) {
+        if (response.msg == 'success') {
+          window.location.href = '/account/' + response.data;
+        }
+        if (response.msg == 'invalid_Info') {
+          alert('Username or password is invalid');
+        }
+        if (response.msg == 'error') {
+          alert(' error');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+
+  function consulting() {
+    formData = {
+      name: $("#consultingName").val(),
+      Email: $("#consultingEmail").val(),
+      phone: $("#consultingPhone").val(),
+      purpose: $("#consultingPurpose").val(),
+      consultingTime: $("#consultingTime").val(),
+      consultingVia: $("#consultingVia").val(),
+    }
+    $.ajax({
+      url: '/consulting',
+      method: 'post',
+      dataType: 'json',
+      data: formData,
+      success: function (response) {
+        if (response.msg == 'success') {
+          alert(' success');
+        }
+        if (response.msg == 'error') {
+          alert(' error');
+        }
+      },
+      error: function (response) {
+        alert('server error');
+      }
+    })
+  }
+</script>
+
+</html>

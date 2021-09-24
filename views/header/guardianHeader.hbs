@@ -1,22 +1,24 @@
+
+
 <ul>
     <li style="float:left;font-family:cursive;">Sown English</li>
-    <li></li>
-    <li></li>
-    <li onclick="location.href='/account/homeStudent';">
-        <div style="background-color:lightpink;display:none;height:10px"></div>
-        Trang chủ Student
-    </li>
-    <li onclick="location.href='/student/allClass/0'">
-        <div style="background-color:lightpink;display:none;height:10px"></div>
-        Class
-    </li>
-    <li onclick="location.href='/messenger/chatForm';">
-        <div style="background-color:lightpink;display:none;height:10px"></div>
-        Messenger
-    </li>
-    <li></li>
     <li onclick="location.href='/';">
         <div style="background-color:lightpink;display:none;height:10px"></div>
         <i class="fas fa-sign-out-alt fa-lg"></i>
     </li>
+    <li id="welcome"></li>
+    <li onclick="location.href='/messenger/chatForm';">
+        <div style="background-color:lightpink;display:none;height:10px"></div>
+        Messenger <label id="UnreadMessages" runat="server" class="messages"></label>
+    </li>
+
+    <li onclick="location.href='/guardian/allClass/0'">
+        <div style="background-color:lightpink;display:none;height:10px"></div>
+        Class
+    </li>
+    <li onclick="location.href='/account/homeGuardian';">
+        <div style="background-color:lightpink;display:none;height:10px"></div>
+        Home guardian
+    </li>
+
 </ul>

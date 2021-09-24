@@ -1,27 +1,79 @@
 * {
     box-sizing: border-box;
-    width: 100%;
-    text-align: center;
-    padding: 2%;
-    margin: 0;
 }
 
 body {
     width: 100%;
     background-image: url("/images/background.jpg");
     background-repeat: repeat-x;
-    padding: 0;
     margin: 0;
     margin-top: 1%;
     z-index: 1;
+    padding: 2%;
+}
+
+button,
+select {
+    font-size: 18px;
 }
 
 .content {
     box-sizing: border-box;
     margin: 0;
     margin-top: 10px;
-    height: 520px;
+    height: 600px;
+    padding: 20px;
+    border-radius: 20px;
+    border: solid;
+}
+
+
+/* chỉnh tableClass bảng lớp */
+
+#tableClass {
+    font-size: 18px;
+}
+
+#tableClass button {
+    font-size: 17px;
+}
+
+
+/* chỉnh option thanh lựa chọn */
+
+#option {
+    margin-bottom: 10px;
+}
+
+#option input,
+#option select,
+#option button {
+    font-size: 18px;
+}
+
+#option .tr {
+    height: 40px;
+    border: none;
     padding: 0;
+    margin: 0;
+}
+
+#option .td {
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+    border: none;
+    font-size: 20px;
+    padding-right: 20px;
+}
+
+#tableClass .tr:nth-child(1),
+#attendedList .tr:nth-child(1),
+.studentListContent .tr:nth-child(1),
+.takeAttendFormOut .tr:nth-child(1) {
+    background-color: gray;
+    color: white;
+    font-size: 20px;
 }
 
 .tr {
@@ -33,14 +85,18 @@ body {
 .td {
     display: table-cell;
     padding: 5px;
-    width: 300px;
     border: #000000 solid 1px;
     margin: 5px;
+    width: 300px;
     text-align: center;
     vertical-align: middle;
+    font-size: 18px;
 }
 
-.innerOut,
+
+/* chỉnh thuộc tính chung cho cover modal cấp 1 */
+
+.studentListContentOut,
 .attendedOutDoorOut,
 .attendedListOut {
     width: 100%;
@@ -58,7 +114,10 @@ body {
     vertical-align: middle;
 }
 
-.lolaOut,
+
+/* chỉnh thuộc tính chung cho cover modal cấp 2 */
+
+.takeAttendFormOut,
 .studentAssessmentOut,
 .studentAssessmentUpdateOut {
     width: 100%;
@@ -66,7 +125,6 @@ body {
     padding: 10%;
     z-index: 20;
     position: fixed;
-    text-align: center;
     /* Stay in place */
     background-color: rgb(215, 225, 230);
     /* Fallback color */
@@ -75,44 +133,98 @@ body {
     vertical-align: middle;
 }
 
-.inner,
-#lola,
+
+/* chỉnh thuộc tính chung cho modal các cấp */
+
+.studentListContent,
+#takeAttendContent,
 .attendedOutDoor,
 #attendedList,
 .studentAssessment,
 .studentAssessmentUpdate {
-    background-color: aquamarine;
+    background-color: whitesmoke;
+    padding: 2%;
+    margin: 0;
     height: 100%;
     width: 100%;
     overflow: auto;
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
+    font-size: 18px;
+}
+
+
+/* chỉnh studentListContent ảnh cho danh sách học sinh */
+
+.studentListContent img {
+    height: 100px;
+    width: 100px;
+}
+
+
+/* chỉnh takeAttendContent form điểm danh modal cấp 2 */
+
+#takeAttendContent {
+    text-align: center;
+    font-size: 18px;
+    width: 40%;
+    padding: 2%;
+    margin-left: 30%;
+}
+
+#takeAttendContent img {
+    height: 100px;
+    width: 100px;
+}
+
+#takeAttendContent button {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+
+/* chỉnh attendedList danh sách lịch học modal cấp 1 */
+
+#attendedList {
+    text-align: left;
+    font-size: 18px;
+    width: 40% !important;
+    padding: 2%;
+    margin-left: 30%;
+}
+
+
+/* chỉnh studentAssessment modal đánh giá và cập nhật đnash giá học sinh modal cấp 2 */
+
+.studentAssessment,
+.studentAssessmentUpdate {
+    text-align: left;
+    font-size: 18px;
+    width: 40% !important;
+    padding: 2%;
+    margin-left: 30%;
+}
+
+.studentAssessment input,
+.studentAssessmentUpdate input {
+    font-size: 18px;
+    width: 100%;
+}
+
+.studentAssessment select,
+.studentAssessmentUpdate select {
+    font-size: 18px;
+    width: 100%;
+}
+
+.studentAssessment button,
+.studentAssessmentUpdate button {
+    font-size: 18px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 ::-webkit-scrollbar {
     width: 0 !important;
     display: none;
-}
-
-.studentTableOut {
-    width: 100%;
-    height: 100%;
-    padding: 10%;
-    z-index: 20;
-    position: fixed;
-    text-align: center;
-    /* Stay in place */
-    background-color: rgb(215, 225, 230);
-    /* Fallback color */
-    background-color: rgba(209, 189, 189, 0.4);
-    /* Black w/ opacity */
-    overflow: scroll;
-    vertical-align: middle;
-}
-
-#studentTable {
-    background-color: aquamarine;
-    height: 100%;
-    width: 100%;
-    overflow: scroll;
 }

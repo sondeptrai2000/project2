@@ -3,7 +3,6 @@
 
 <head>
 
-    <script src="/jquery/jquery.js"></script>
     {{!-- jsonToExcel --}}
     <link rel="stylesheet" href="/css/admin/studentClassDetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
@@ -20,23 +19,29 @@
     <div class="teacherIn4Out" style="display:none">
         <div class="teacherIn4"></div>
     </div>
+    <div id="routeTuyBien" border="solid" style="overflow:auto;"></div>
+
     <div class="content">
         <div class='leftSide'>
             {{#each data}}
             <input type="hidden" value="{{_id}}" id="studentID">
             <img src='{{avatar}}'>
-            <figcaption>{{username}}</figcaption>
-            <figcaption>{{email}}</figcaption>
+            <p>Name: {{username}}</p>
+            <p>Email: {{email}}</p>
+            <p id="routeTypeS">{{routeName}}</p>
+            <p id="start">Start stage: {{startStage}}</p>
+            <p id="current">Current stage: {{stage}}</p>
+            <p id="end">Aim stage: {{aim}}</p>
             {{/each}}
         </div>
         <div class='rightSide'>
-              <div class='tr'>
+            <div class='tr'>
                 <div class='td'>Class name</div>
-                <div class='td'>routeName</div>
-                <div class='td'>stage</div>
-                <div class='td'>subject</div>
+                <div class='td'>Route</div>
+                <div class='td'>Stage</div>
+                <div class='td'>Subject</div>
                 <div class='td'>Description</div>
-                <div class='td'>Teacher Name</div>
+                <div class='td'>Teacher</div>
                 <div class='td'>Start date</div>
                 <div class='td'>End date</div class='td'>
                 <div class='td'>Student List</div>
@@ -48,7 +53,7 @@
                 <div class='td'>{{routeName}}</div>
                 <div class='td'>{{stage}}</div>
                 <div class='td'>{{subject}}</div>
-                <div class='td'>{{description}}</div>                
+                <div class='td'>{{description}}</div>
                 <div class='td' onclick="viewTeacherProfile('{{teacherID._id}}')">{{teacherID.username}}</div>
                 <div class='td'>{{startDate}}</div>
                 <div class='td'>{{endDate}}</div>
@@ -62,6 +67,8 @@
         </div>
     </div>
 </body>
+<script src="/jquery/jquery.js"></script>
+
 <script src="/js/admin/allClassStudent.js"></script>
 
 

@@ -6,33 +6,36 @@ $(document).ready(function() {
     teacherProfile();
     //lịch học or làm việc
     test();
-    //hiệu ứng menu
-    $('header li').hover(function() {
-        $(this).find("div").slideDown()
-    }, function() {
-        $(this).find("div").hide(500)
-    });
-    //close modal box
-    $(window).on('click', function(e) {
-        if ($(e.target).is('.updateProfileOut')) $('.updateProfileOut').slideUp(1500);
-    });
-    $('#myFile').on('change', function() {
-        var filereader = new FileReader();
-        filereader.onload = function(event) {
-            fileData = event.target.result;
-            var dataURL = filereader.result;
-            $("#currentAvatar").attr("src", dataURL);
-        };
-        myFile = $('#myFile').prop('files')[0];
-        console.log('myfile', myFile)
-        filereader.readAsDataURL(myFile)
-    });
+    unReadMess();
+});
+
+//hiệu ứng menu
+$('header li').hover(function() {
+    $(this).find("div").slideDown()
+}, function() {
+    $(this).find("div").hide(500)
+});
+
+//close modal box
+$(window).on('click', function(e) {
+    if ($(e.target).is('.updateProfileOut')) $('.updateProfileOut').slideUp(1500);
+});
+$('#myFile').on('change', function() {
+    var filereader = new FileReader();
+    filereader.onload = function(event) {
+        fileData = event.target.result;
+        var dataURL = filereader.result;
+        $("#currentAvatar").attr("src", dataURL);
+    };
+    myFile = $('#myFile').prop('files')[0];
+    console.log('myfile', myFile)
+    filereader.readAsDataURL(myFile)
 });
 
 //lấy thông tin cá nhân
 function teacherProfile() {
     $.ajax({
-        url: '/teacher/teacherProfile',
+        url: '/account/Profile',
         method: 'get',
         dataType: 'json',
         data: {},
@@ -53,20 +56,41 @@ function teacherProfile() {
             alert('server error');
         }
     })
+};
+
+//lấy số tin nhắn chưa đọc
+function unReadMess() {
+    $.ajax({
+        url: '/messenger/unreadMess',
+        method: 'get',
+        dataType: 'json',
+        data: {},
+        success: function(response) {
+            if (response.msg == 'success') {
+                $("#UnreadMessages").html(response.unReadMess)
+            }
+        },
+        error: function(response) {
+            alert('server error');
+        }
+    })
 }
+
 //đưa thông tin cũ vào bảng cập nhật thông tin
 function updateProfile() {
     $("#currentAvatar").attr("src", $('#avatarProfile').attr('src'));
     $("#avatarOldProfile").val($('#avatarProfile').attr('src'));
     $("#idProfileUpdate").html($("#idProfile").text());
     $("#usernameUpdate").val($("#usernameProfile").text().split("Full Name: ")[1]);
-    $("#genderUpdate").val($("#genderProfile").text().split("Gender: ")[1]);
+    $('#genderUpdate option:selected').removeAttr('selected');
+    $("#genderUpdate option[value='" + $("#genderProfile").text().split("Gender: ")[1] + "']").attr('selected', 'selected');
     $("#emailUpdate").val($("#emailProfile").text().split("Email: ")[1]);
     $("#phoneUpdate").val($("#phoneProfile").text().split("Phone: ")[1]);
     $("#birthdayUpdate").val($("#birthdayProfile").text().split("BirthDay: ")[1]);
     $("#addressUpdate").val($("#addressProfile").text().split("Address: ")[1]);
     $(".updateProfileOut").toggle(2000);
-}
+
+};
 
 //cập nhật thông tin giáo viên
 function doUpdateProfile() {
@@ -84,7 +108,7 @@ function doUpdateProfile() {
         avatar: $('#currentAvatar').attr('src'),
     };
     $.ajax({
-        url: '/teacher/doeditAccount',
+        url: '/account/doeditAccount',
         method: 'post',
         dataType: 'json',
         data: {
@@ -107,10 +131,10 @@ function doUpdateProfile() {
             alert('server error');
         }
     })
-}
+};
 
 
-
+//tạo lịch
 function test() {
     //lấy các ngày trong năm
     for (var arr = [], dt = new Date("2021-01-01"); dt <= new Date("2021-12-31"); dt.setDate(dt.getDate() + 1)) {
@@ -119,7 +143,7 @@ function test() {
         var lol = date.getFullYear() + "-" + month + "-" + date.getDate().toString().padStart(2, "0");
         arr.push({ "ngay": lol, "thu": (date.getDay() + 1) });
     }
-    //chia thành các tuần từ thứ 2 đến CN
+    //chia thành các tuần từ thứ 2 to CN
     var tuan = []
     var check = false
     var check2 = false
@@ -127,27 +151,25 @@ function test() {
         var d = new Date(arr[i].ngay);
         var n = d.getDay();
         if (arr[i].thu != 2 && i < 7 && check2 == false) {
-            tuan.push(arr[i].ngay + ' đến ' + arr[7 - n].ngay)
+            tuan.push(arr[i].ngay + ' to ' + arr[7 - n].ngay)
             check2 = true
         }
-        if (arr[i].thu == 2 && (i + 7) < arr.length) {
-            tuan.push(arr[i].ngay + ' đến ' + arr[i + 6].ngay)
-        }
+        if (arr[i].thu == 2 && (i + 7) < arr.length) tuan.push(arr[i].ngay + ' to ' + arr[i + 6].ngay)
+
         if (arr[i].thu != 2 && (i + 7) > arr.length && check == false) {
-            tuan.push(arr[i + 1].ngay + ' đến ' + arr[arr.length - 1].ngay)
+            tuan.push(arr[i + 1].ngay + ' to ' + arr[arr.length - 1].ngay)
             check = true
         }
     }
     //đưa các tuần vào thẻ select và đặt select cho tuần hiện tại.
     const date1 = new Date();
-    var year = date1.getFullYear()
     var month = date1.getMonth() + 1
         //lấy thời gian hiện tại để so sánh và lấy tuần
     var now = date1.getFullYear() + "-" + month.toString().padStart(2, "0") + "-" + date1.getDate();
     for (var u = 0; u < tuan.length; u++) {
         $("#chonTuan").append('<option value="' + tuan[u] + '">' + tuan[u] + '</option>');
-        dauTuan = tuan[u].split(" đến ")[0]
-        cuoiTuan = tuan[u].split(" đến ")[1]
+        dauTuan = tuan[u].split(" to ")[0]
+        cuoiTuan = tuan[u].split(" to ")[1]
         if ((dauTuan <= now) && (now <= cuoiTuan)) {
             $('#chonTuan option:selected').removeAttr('selected');
             $("#chonTuan option[value='" + tuan[u] + "']").attr('selected', 'selected');
@@ -168,14 +190,14 @@ var getDaysArray = function(start, end) {
 //lấy thông tin lịch trình học, làm việc
 function tuanoi() {
     var tuan = $("#chonTuan").val()
-    var dauTuan = tuan.split(" đến ")[0]
-    var cuoiTuan = tuan.split(" đến ")[1]
+    var dauTuan = tuan.split(" to ")[0]
+    var cuoiTuan = tuan.split(" to ")[1]
     var formData = {
-            dauTuan: dauTuan,
-            cuoiTuan: cuoiTuan
-        }
-        //chỉnh fomat date giống Type Date trong mongoDB để so sánh 
-        // link src hàm moment ở head
+        dauTuan: dauTuan,
+        cuoiTuan: cuoiTuan
+    };
+    //chỉnh fomat date giống Type Date trong mongoDB để so sánh 
+    // link src hàm moment ở head
     var start = moment(new Date(dauTuan)).format('YYYY-MM-DD[T00:00:00.000Z]');
     var end = moment(new Date(cuoiTuan)).format('YYYY-MM-DD[T00:00:00.000Z]');
     var a = getDaysArray(new Date(dauTuan), new Date(cuoiTuan));
@@ -192,17 +214,17 @@ function tuanoi() {
         data: formData,
         success: function(response) {
             if (response.msg == 'success') {
-                $("#time1").html('<div class="td">7:30 đến 9:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time2").html('<div class="td">9:45 đến 11:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time3").html('<div class="td">13:30 đến 15:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time4").html('<div class="td">15:45 đến 17:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
-                $("#time5").html('<div class="td">18:15 đến 20:15</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time1").html('<div class="td">7:30 to 9:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time2").html('<div class="td">9:45 to 11:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time3").html('<div class="td">13:30 to 15:30</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time4").html('<div class="td">15:45 to 17:45</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
+                $("#time5").html('<div class="td">18:15 to 20:15</div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div><div class="td"></div>')
                 $.each(response.classInfor, function(index, classInfor) {
                     $.each(classInfor.schedule, function(index, schedule) {
                         if (start <= schedule.date && schedule.date <= end) {
                             //ghi thông tin lịch học, làm việc vào bảng
                             var caLam = typeTime(schedule.time)
-                            $("#" + caLam + " div:nth-child(" + schedule.day + ")").append("<a href='/teacher/allClass/" + classInfor._id + "'>Class: " + classInfor.className + "</a> Room: " + schedule.room)
+                            $("#" + caLam + " div:nth-child(" + schedule.day + ")").append("<a href='/teacher/allClass/" + classInfor._id + "'>" + classInfor.className + "</a><br> Room: " + schedule.room)
                         }
                     });
                 });
@@ -219,10 +241,11 @@ function tuanoi() {
 //chia 3 làm việc để in vào bảng theo id
 function typeTime(time) {
     var caLam
-    if (time == "7:30 đến 9:30") caLam = "time1"
-    if (time == "9:45 đến 11:45") caLam = "time2"
-    if (time == "13:30 đến 15:30") caLam = "time3"
-    if (time == "15:45 đến 17:45") caLam = "time4"
-    if (time == "18:15 đến 20:15") caLam = "time5"
+    if (time == "7:30 to 9:30") caLam = "time1"
+    if (time == "9:45 to 11:45") caLam = "time2"
+    if (time == "13:30 to 15:30") caLam = "time3"
+    if (time == "15:45 to 17:45") caLam = "time4"
+    if (time == "18:15 to 20:15") caLam = "time5"
     return caLam
+
 }

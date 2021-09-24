@@ -1,20 +1,56 @@
 $(document).ready(function() {
-    getClass()
-        //hiệu ứng menu
-    $('header li').hover(function() {
-        $(this).find("div").slideDown()
-    }, function() {
-        $(this).find("div").hide(500)
-    });
+    getClass();
+    unReadMess();
 
 
-    $(window).on('click', function(e) {
-        if ($(e.target).is('.studentListOut')) $('.studentListOut').slideUp(1500);
-        if ($(e.target).is('.teacherIn4Out')) $('.teacherIn4Out').slideUp(1500);
-        if ($(e.target).is('.myAttendOut')) $('.myAttendOut').slideUp(1500);
-    });
 });
 
+//hiệu ứng menu
+$('header li').hover(function() {
+    $(this).find("div").slideDown()
+}, function() {
+    $(this).find("div").hide(500)
+});
+
+
+$(window).on('click', function(e) {
+    if ($(e.target).is('.studentListOut')) $('.studentListOut').slideUp(1500);
+    if ($(e.target).is('.teacherIn4Out')) $('.teacherIn4Out').slideUp(1500);
+    if ($(e.target).is('.myAttendOut')) $('.myAttendOut').slideUp(1500);
+});
+
+//lấy số tin nhắn chưa đọc
+function unReadMess() {
+    $.ajax({
+        url: '/messenger/unreadMess',
+        method: 'get',
+        dataType: 'json',
+        data: {},
+        success: function(response) {
+            if (response.msg == 'success') {
+                $("#UnreadMessages").html(response.unReadMess)
+            }
+        },
+        error: function(response) {
+            alert('server error');
+        }
+    })
+}
+
+//tìm kiếm lớp học
+$("#myInput").keyup(function() {
+    var filter = $("#myInput").val().toUpperCase()
+    console.log(filter)
+    $("#tableClass .tr:not(:first-child)").each(function() {
+        if ($(this).find('.td').text().toUpperCase().indexOf(filter) > -1) {
+            $(this).show()
+            console.log($(this).text())
+        } else {
+            $(this).hide()
+        }
+        if (filter == "") $(this).show()
+    })
+});
 
 //lấy thông tin các lớp đã và đang học
 function getClass() {
@@ -25,17 +61,24 @@ function getClass() {
         data: { check: "0" },
         success: function(response) {
             if (response.msg == 'success') {
-                $("#tableClass").html("<div class='tr'><div class='td'>Class name</div><div class='td'>routeName</div><div class='td'>stage</div><div class='td'>subject</div><div class='td'>Description</div><div class='td'>Teacher Name</div><div class='td'>Start date</div><div class='td'>End date</div class='td'><div class='td'>Student List</div></div>")
+                $("#tableClass").html("<div class='tr'><div class='td'>Class name</div><div class='td'>stage</div><div class='td'>subject</div><div class='td'>Description</div><div class='td'>Teacher Name</div><div class='td'>Start date</div><div class='td'>End date</div><div class='td'>Grade</div><div class='td'>Comment</div><div class='td'>Action</div></div>")
                 response.classInfor.forEach((e) => {
                     e.classID.forEach((e) => {
-                        $("#tableClass").append("<div class='tr' id=" + e._id + "><div class='td'>" + e.className + "</div><div class='td'>" + e.routeName + "</div><div class='td'>" + e.stage + "</div><div class='td'>" + e.subject + "</div><div class='td'>" + e.description + "</div><div class='td' onclick=viewTeacherProfile('" + e.teacherID._id + "')>" + e.teacherID.username + "</div><div class='td'>" + e.startDate + "</div><div class='td'>" + e.endDate + "</div><div class='td'><button onclick=sendData('" + e._id + "','" + e.subject + "')>List of student</button><button onclick=myAttended('" + e._id + "')>myAttended</button></div></div>")
+                        $("#tableClass").append("<div class='tr' id=" + e._id + "><div class='td'>" + e.className + "</div><div class='td'>" + e.stage + "</div><div class='td'>" + e.subject + "</div><div class='td'>" + e.description + "</div><div class='td' onclick=viewTeacherProfile('" + e.teacherID._id + "')>" + e.teacherID.username + "</div><div class='td'>" + e.startDate.replace("T00:00:00.000Z", "") + "</div><div class='td'>" + e.endDate.replace("T00:00:00.000Z", "") + "</div></div>")
+                        var classID = e._id
+                        e.studentID.forEach((e) => {
+                            if (e.ID == response.studentID) $("#" + classID).append("<div class='td'>" + e.grade + "</div><div class='td'>" + e.feedBackContent + "</div>")
+                        })
+                        $("#" + classID).append("<div class='td'><button onclick=sendData('" + e._id + "')>List student</button><button onclick=myAttended('" + e._id + "')>My attend</button></div>")
                     })
                 })
                 var getClassID = $("#getClassID").val()
                 if (getClassID) {
-                    $("#" + getClassID).css("background-color", 'red')
+                    $("#" + getClassID).css("text-decoration-line", 'underline');
+                    $("#" + getClassID).css("font-size", '20px');
                     setTimeout(function() {
-                        $("#" + getClassID).css("background-color", '')
+                        $("#" + getClassID).css("text-decoration-line", 'none');
+                        $("#" + getClassID).css("font-size", '18px');
                     }, 5000)
                 }
             }
@@ -92,7 +135,7 @@ function viewTeacherProfile(id) {
         success: function(response) {
             if (response.msg == 'success') {
                 $.each(response.data, function(index, data) {
-                    $(".teacherIn4").html("<div class='tr'><img style ='max-width:150px;max-height:200px' src='" + data.avatar + "'><label>" + data.username + "</label></div><div class='tr'>" + data.email + "</div><div class='tr'><form action='/messenger/makeConnection' method='post'><input type='hidden' name='studentID' value='" + data._id + "'><input type='hidden' name='studentName' value='" + data.username + "'><button>Chat</button></form></div>");
+                    $(".teacherIn4").html("<img style ='max-width:150px;max-height:200px' src='" + data.avatar + "'><p>" + data.username + "</p><p>" + data.email + "</p><form action='/messenger/makeConnection' method='post'><input type='hidden' name='studentID' value='" + data._id + "'><input type='hidden' name='studentName' value='" + data.username + "'><button>Chat</button></form>");
                 });
                 $(".teacherIn4Out").fadeIn(500);
             }
